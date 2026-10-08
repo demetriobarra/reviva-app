@@ -66,7 +66,7 @@
   };
 
   // 3) Toque sutil ao concluir passos.
-  function haptic() { if (isNative && P.Haptics) P.Haptics.impact({ style: 'LIGHT' }).catch(function () {}); }
+  function haptic() { if (!isNative || !P.Haptics) return; try { var r = P.Haptics.impact({ style: 'LIGHT' }); if (r && r.catch) r.catch(function () {}); } catch (e) {} }
 
   window.RevivaNative = { isNative: isNative, reminders: reminders, haptic: haptic, platform: isNative ? Cap.getPlatform() : 'web' };
 })();

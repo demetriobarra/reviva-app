@@ -7,6 +7,8 @@
 <meta name="description" content="Reviva — um jardim para atravessar o luto no seu tempo.">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script src="/native.js"></script>
+<script src="/conteudo.js"></script>
+<script src="/livro.js"></script>
 <link rel="manifest" href="/manifest.json">
 <script defer src="/_vercel/insights/script.js"></script>
 <meta name="theme-color" content="#FBF7F2">
@@ -130,6 +132,12 @@ textarea{resize:none;min-height:140px;line-height:1.55}
 .entry .meta{font-size:11.5px;color:var(--mute);font-weight:700;margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap}
 .entry .txt{font-size:14.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap}
 .pillEmo{background:#f6ecf0;color:var(--rose2);border-radius:999px;padding:2px 8px;font-size:11px}
+.seedT{font-family:Fraunces,Georgia,serif;font-size:18px;line-height:1.35;margin:6px 0 0;color:var(--ink)}
+.relatoT{font-family:Fraunces,Georgia,serif;font-size:16px;line-height:1.45;color:var(--ink);margin:6px 0 4px}
+button.card{font:inherit;color:inherit;display:block;width:100%;text-align:left}
+.inp{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);font:inherit;font-size:15px;width:100%;outline:none}
+.livroTxt p{font-family:Fraunces,Georgia,serif;font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 12px}
+.livroTxt .fade{height:70px;margin-top:-70px;position:relative;background:linear-gradient(rgba(255,255,255,0),#fff)}
 .empty{text-align:center;color:var(--mute);font-size:13.5px;padding:28px 10px}
 /* apoio */
 .sos{background:var(--plum);color:#fff;border-radius:18px;padding:16px;margin:0 22px 14px}
@@ -308,6 +316,40 @@ const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const firstName=()=>((state.lead.name||'').trim().split(/\s+/)[0]||'');
 const today=()=>new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).replace('.','');
+/* Conteúdo diário, relatos e livro */
+const RVC=window.RV_CONTEUDO||{sementes:[],perguntas:[]},LIVRO=window.RV_LIVRO||{};
+const dkey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function dayIdx(n){if(!n)return 0;const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%n}
+const livroOn=()=>!!(LIVRO.ativo&&LIVRO.trecho&&LIVRO.trecho.length);
+const CRISE=/suic[ií]d|me matar|tirar (a )?minha (pr[oó]pria )?vida|n[aã]o quero (mais )?viver|acabar com tudo|quero morrer/i;
+function avisoCrise(t){if(CRISE.test(t||'')){alert('Obrigada por confiar o que você sente. Se você estiver pensando em não viver, fale agora com o CVV: ligue 188 (24 horas, gratuito) ou acesse cvv.org.br. Em emergência, SAMU 192.');return true}return false}
+let RELATOS=[];try{RELATOS=JSON.parse(localStorage.getItem('reviva:relatos')||'[]')}catch(e){}
+function loadRelatos(){const url=(window.RevivaNative&&RevivaNative.isNative)?'https://www.appreviva.online/relatos.json':'/relatos.json';fetch(url,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&Array.isArray(j.relatos)){RELATOS=j.relatos.filter(r=>r&&r.texto);try{localStorage.setItem('reviva:relatos',JSON.stringify(RELATOS))}catch(e){}if(state.onboarded&&!route.mission&&(route.tab==='jardim'||route.page==='relatos'))render()}}).catch(()=>{})}
+function relatoAss(r){return esc(r.assinatura||'Anônima')+(r.cidade?' · '+esc(r.cidade):'')}
+function renderRelatos(){
+ const list=RELATOS.length?`<div class="stack pad">${RELATOS.map(r=>`<div class="card"><p class="relatoT" style="margin:0">“${esc(r.texto)}”</p><div class="small" style="margin-top:8px">${relatoAss(r)}</div></div>`).join('')}</div>`:`<div class="empty">Os primeiros relatos estão sendo lidos com carinho.<br>Que tal ser uma das primeiras a compartilhar?</div>`;
+ const env=state.relatoEnviado||0;
+ return `<div class="backbar"><button class="back" data-act="backPage" aria-label="Voltar">←</button><span class="tag">Apoio</span></div>
+ <div class="welcome"><h1 style="font-size:23px">Relatos</h1><p class="body" style="margin-top:6px">Histórias reais de quem está atravessando o luto. Cada relato é lido pela equipe ReViva antes de aparecer aqui.</p></div>
+ ${list}
+ <div class="card" style="margin:16px 22px 26px"><h2 style="color:var(--ink)">Compartilhe a sua história</h2><p class="small" style="margin:6px 0 10px">Um elogio, um passo que você conseguiu dar, uma palavra para quem está começando. Não coloque nomes completos, telefones ou endereços.</p>
+ <textarea id="rText" maxlength="1200" placeholder="Escreva aqui, do seu jeito..."></textarea>
+ <input id="rNome" class="inp" maxlength="40" placeholder="Como quer assinar (ex.: Maria, BH)" style="margin-top:10px">
+ <p class="small" style="margin:4px 0 0">Deixe em branco para aparecer como anônima.</p>
+ <label class="small" style="display:flex;gap:8px;align-items:flex-start;margin-top:10px"><input type="checkbox" id="rOk" style="margin-top:3px"> Autorizo a equipe ReViva a publicar este relato no app e no site, sem meus dados de contato.</label>
+ <button class="primary" style="margin-top:12px" data-act="enviarRelato">Enviar relato</button>
+ ${env?`<p class="small" style="margin-top:8px;text-align:center">Você já enviou ${env} relato${env>1?'s':''}. Obrigada por compartilhar.</p>`:''}</div>`;
+}
+function renderLivro(){
+ const L=LIVRO,nat=window.RevivaNative&&RevivaNative.isNative,lk=L.links||{};
+ const dig=lk.digital&&(!nat||L.digitalNoApp);
+ return `<div class="backbar"><button class="back" data-act="backPage" aria-label="Voltar">←</button><span class="tag">Livro da Day</span></div>
+ <div class="pad" style="text-align:center;margin-top:6px">${L.capa?`<img src="${esc(L.capa)}" alt="Capa do livro ${esc(L.titulo)}" style="width:150px;border-radius:8px;box-shadow:0 8px 24px rgba(46,36,54,.18)">`:''}<h1 style="font-size:24px;margin-top:14px">${esc(L.titulo)}</h1><p class="small">${esc(L.autora)}</p>${L.sinopse?`<p class="body" style="margin-top:10px;text-align:left">${esc(L.sinopse)}</p>`:''}</div>
+ <div class="pad"><p class="tag" style="margin:18px 0 8px">Comece a ler</p><div class="card livroTxt">${(L.trecho||[]).map(p=>`<p>${esc(p)}</p>`).join('')}<div class="fade"></div></div>
+ <div class="card" style="margin-top:14px;text-align:center"><h2 style="color:var(--ink)">Quer continuar a leitura?</h2>${L.cupom?`<p class="small" style="margin:8px 0 10px">Por usar o ReViva, você tem ${esc(L.desconto||'um desconto especial')} com o cupom:</p><button class="secondary" data-act="copiarCupom" style="letter-spacing:.08em">${esc(L.cupom)} · copiar</button>`:''}
+ ${lk.fisico?`<a class="primary" style="display:block;margin-top:12px;text-decoration:none" href="${esc(lk.fisico)}" target="_blank" rel="noopener" data-track="livro_fisico">Comprar o livro físico</a>`:''}
+ ${dig?`<a class="secondary" style="display:block;margin-top:10px;text-decoration:none;color:var(--ink)" href="${esc(lk.digital)}" target="_blank" rel="noopener" data-track="livro_digital">Comprar o e-book</a>`:''}</div></div><div style="height:26px"></div>`;
+}
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2200)}
 function vis(st){return st.missoes.filter(m=>!m.cond||m.cond(state.answers))}
 function doneCount(st){return vis(st).filter(m=>state.done[m.id]).length}
@@ -461,7 +503,9 @@ function render(){
  const app=$('#app');
  if(!state.onboarded){app.innerHTML=`<div class="view" id="view">${renderOnboarding()}</div>`;afterRender();return}
  let body='';
- if(route.mission)body=renderMission();
+ if(route.page==='relatos')body=renderRelatos();
+ else if(route.page==='livro'&&livroOn())body=renderLivro();
+ else if(route.mission)body=renderMission();
  else if(route.station)body=renderStation();
  else if(route.tab==='jardim')body=renderGarden();
  else if(route.tab==='diario')body=renderDiary();
@@ -498,10 +542,13 @@ function renderGarden(){
  const intro=recent()?'Nos primeiros dias, menos é mais. Comece pelo Acolhimento — o resto do jardim espera por você.':'Toque em um canteiro para cuidar dele. Não há ordem certa nem pressa.';
  return `<div class="top">${LOGO}<span class="small">${pct}% do jardim</span></div>
  <div class="welcome"><h1 style="font-size:23px">${greeting()}${fn?', '+esc(fn):''}.</h1><p class="body" style="margin-top:6px">${intro}</p></div>
+ ${(()=>{const s=RVC.sementes[dayIdx(RVC.sementes.length)];if(!s)return '';const feito=(state.sem||{})[dkey()];return `<div class="pad" style="margin:0 0 14px"><div class="card"><div class="tag">Semente do dia</div><p class="seedT">${esc(s.t)}</p><p class="small" style="margin:8px 0 10px"><strong>Para hoje:</strong> ${esc(s.a)}</p>${feito?'<div class="small" style="color:var(--sage);font-weight:800">Feito hoje. Seu jardim agradece.</div>':'<button class="secondary" data-act="semente">Fiz hoje</button>'}</div></div>`})()}
  <div class="gardenWrap">${gardenSVG()}</div>
  ${next?`<div class="pad" style="margin:14px 0 12px"><button class="nextCard" data-station="${next.st.id}" data-mission="${next.m.id}"><span class="iconBox" style="width:38px;height:38px;border-radius:12px;background:${next.st.cor}">${ico(next.st.icon)}</span><span style="flex:1"><span class="tag">Próximo passo · ${esc(next.st.nome)}</span><br><strong style="font-size:14px">${esc(next.m.titulo)}</strong></span><span>›</span></button></div>`:''}
  ${(window.RevivaNative&&RevivaNative.reminders.available&&!(state.rem&&(state.rem.on||state.rem.asked))&&Object.keys(state.done||{}).length>0)?`<div class="pad" style="margin:0 0 12px"><div class="card"><h3>Quer um lembrete gentil?</h3><p class="small" style="margin:6px 0 12px">Um convite por dia para voltar ao seu jardim, no horário que for melhor para você.</p><div class="row2"><button class="secondary" data-act="remOn" data-hour="20">Sim, às 20h</button><button class="secondary" data-act="remLater">Agora não</button></div></div></div>`:''}
  <div class="quick"><button data-go="checkin"><span class="qicon" style="background:${C.rose}">${ico('heart')}</span><b>Check-in de hoje</b><small>Como você está?</small></button><button data-go="noite"><span class="qicon" style="background:${C.plum}">${ico('moon')}</span><b>Noite difícil</b><small>Respirar e se acalmar</small></button></div>
+ ${RELATOS.length?(()=>{const r=RELATOS[dayIdx(RELATOS.length)];const tx=r.texto.length>220?r.texto.slice(0,220)+'…':r.texto;return `<div class="pad" style="margin:14px 0 0"><button class="card" data-page="relatos"><div class="tag">Relato do dia</div><p class="relatoT">“${esc(tx)}”</p><div class="small">${relatoAss(r)}</div><div class="small" style="color:var(--rose2);font-weight:800;margin-top:6px">Ler mais relatos ›</div></button></div>`})():''}
+ ${livroOn()&&(LIVRO.frases||[]).length?`<div class="pad" style="margin:12px 0 0"><button class="card" data-page="livro"><div class="tag">Do livro da Day</div><p class="relatoT">${esc(LIVRO.frases[dayIdx(LIVRO.frases.length)])}</p><div class="small" style="color:var(--rose2);font-weight:800;margin-top:6px">Ler o começo de “${esc(LIVRO.titulo)}” ›</div></button></div>`:''}
  <div style="height:10px"></div>`;
 }
 function nextMission(){const order=recent()?STATIONS.filter(s=>s.id==='acolhimento'||s.id==='reancoragem'):STATIONS;for(const st of order){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}if(recent()){for(const st of STATIONS){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}}return null}
@@ -535,7 +582,8 @@ function renderDiary(){
  const seg=route.seg;
  let list='';
  if(seg==='diario'){
-  list=`<div class="card" style="margin:0 22px 12px"><h2>Como foi hoje?</h2>${emoPicker()}<button class="primary" style="margin-top:10px" data-act="addDiary">Registrar</button></div>`;
+  const q=RVC.perguntas[dayIdx(RVC.perguntas.length)],qd=(state.perg||{})[dkey()];
+  list=(q?`<div class="card" style="margin:0 22px 12px"><div class="tag">Pergunta do dia</div><h2 style="margin-top:6px;color:var(--ink)">${esc(q)}</h2>${qd?'<p class="small" style="margin-top:8px;color:var(--sage);font-weight:800">Respondida hoje. Está guardada no seu diário.</p>':'<textarea id="pText" style="margin-top:10px;min-height:90px" placeholder="Escreva com calma..."></textarea><button class="secondary" style="margin-top:10px" data-act="responder">Guardar resposta</button>'}</div>`:'')+`<div class="card" style="margin:0 22px 12px"><h2>Como foi hoje?</h2>${emoPicker()}<button class="primary" style="margin-top:10px" data-act="addDiary">Registrar</button></div>`;
   list+=state.diary.length?`<div class="stack pad">${state.diary.map(e=>`<div class="card entry"><div class="meta">${esc(e.data)}${(e.emos||[]).map(x=>`<span class="pillEmo">${esc(x)}</span>`).join('')}</div>${e.texto?`<div class="txt">${esc(e.texto)}</div>`:''}</div>`).join('')}</div>`:'<div class="empty">Seus registros aparecem aqui.</div>';
  }
  if(seg==='cartas')list=state.letters.length?`<div class="stack pad">${state.letters.map(e=>`<div class="card entry"><div class="meta">${esc(e.data)} · ${esc(e.titulo)}</div><div class="txt">${esc(e.texto)}</div></div>`).join('')}</div>`:`<div class="empty">Nenhuma carta ainda.<br><button class="link" style="color:var(--rose2)" data-station="elo" data-mission="e1">Escrever minha primeira carta →</button></div>`;
@@ -546,6 +594,8 @@ function renderApoio(){
  return `<div class="top"><div class="title">Apoio</div></div>
  <div class="sos"><h2>Precisa de ajuda agora?</h2><p>Se a dor estiver insuportável ou surgirem pensamentos de não querer viver, fale com alguém agora. É gratuito e funciona 24 horas.</p><div class="sosBtns"><a href="tel:188">Ligar CVV 188</a><a class="ghost" href="https://cvv.org.br/chat/" target="_blank" rel="noopener">Chat do CVV</a></div><p style="margin:10px 0 0;font-size:12px">Emergência médica: <a href="tel:192" style="color:#fff;font-weight:800">SAMU 192</a></p></div>
  <div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-go="noite"><span class="qicon" style="background:${C.sage}">${ico('moon')}</span><span style="flex:1"><strong>Ansiedade ou solidão à noite</strong><br><span class="small">Respiração guiada e 5-4-3-2-1</span></span><span>›</span></div>
+ <div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-page="relatos"><span class="qicon" style="background:${C.rose}">${ico('chat')}</span><span style="flex:1"><strong>Relatos de quem está atravessando</strong><br><span class="small">Leia e compartilhe a sua história</span></span><span>›</span></div>
+ ${livroOn()?`<div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-page="livro"><span class="qicon" style="background:${C.plum}">${ico('doc')}</span><span style="flex:1"><strong>${esc(LIVRO.titulo)}</strong><br><span class="small">O livro da Day · comece a ler grátis</span></span><span>›</span></div>`:''}
  <div class="pad"><p class="tag" style="margin-bottom:10px">Rede de apoio</p></div>
  <div class="stack pad" style="padding-bottom:24px">${APOIO.filter(a=>!(a[5]==='premium'&&window.RevivaNative&&RevivaNative.isNative)).map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
 }
@@ -575,13 +625,20 @@ function afterRender(){
  const ta=$('#mText');if(ta&&route.mission){const m=findMission(route.mission).m;if(['escrita','carta','memoria'].includes(m.tipo))ta.addEventListener('input',()=>{state.drafts[m.id]=ta.value;save()})}
  const v=$('#view');if(v&&render._scrollTop){v.scrollTop=0;render._scrollTop=false}
 }
-function go(patch){Object.assign(route,patch);render._scrollTop=true;render()}
+function go(patch){if(!('page' in patch))patch.page=null;Object.assign(route,patch);render._scrollTop=true;render()}
 let breathTimer=null;
 function startBreath(){const b=$('#breath');if(!b)return;clearInterval(breathTimer);let inhale=true,cycles=0;const step=()=>{const el=$('#breath');if(!el){clearInterval(breathTimer);return}el.classList.toggle('in',inhale);el.textContent=inhale?'Inspire…':'Solte o ar…';if(!inhale)cycles++;inhale=!inhale;if(cycles>=6){clearInterval(breathTimer);setTimeout(()=>{const e2=$('#breath');if(e2){e2.classList.remove('in');e2.textContent='Muito bem. Toque para repetir.'}},4000)}};step();breathTimer=setInterval(step,4000)}
 
 document.addEventListener('click',e=>{
  const t=e.target;
  const act=t.closest('[data-act]')?.dataset.act;
+ const trk=t.closest('[data-track]');if(trk)track(trk.dataset.track);
+ const pg=t.closest('[data-page]');if(pg){track('pagina',pg.dataset.page);go({page:pg.dataset.page});return}
+ if(act==='backPage'){go({page:null});return}
+ if(act==='semente'){state.sem=Object.assign({},state.sem,{[dkey()]:1});save();track('semente');if(window.RevivaNative)RevivaNative.haptic();toast('Feito. Seu jardim agradece.');render();return}
+ if(act==='responder'){const q=RVC.perguntas[dayIdx(RVC.perguntas.length)];const txt=($('#pText')?.value||'').trim();if(!txt){toast('Escreva algumas palavras antes');return}state.diary.unshift({data:today(),emos:[],texto:'Pergunta do dia: '+q+'\n\n'+txt});state.perg=Object.assign({},state.perg,{[dkey()]:1});save();track('pergunta');avisoCrise(txt);toast('Guardado no seu diário');render();return}
+ if(act==='enviarRelato'){const txt=($('#rText')?.value||'').trim();if(txt.length<15){toast('Escreva um pouco mais, do seu jeito');return}if(!$('#rOk')?.checked){toast('Marque a autorização para enviar');return}send({tipo:'relato',evento:'relato_enviado',relato:txt,assinatura:($('#rNome')?.value||'').trim().slice(0,40)});state.relatoEnviado=(state.relatoEnviado||0)+1;save();if(avisoCrise(txt)){go({tab:'apoio',page:null,station:null,mission:null});return}toast('Relato enviado. Ele será lido com carinho antes de aparecer.');render();return}
+ if(act==='copiarCupom'){track('cupom_copiado');const c=LIVRO.cupom||'';(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Cupom copiado: '+c)).catch(()=>toast('Seu cupom: '+c));return}
  if(act==='nextSlide'){state.slide=Math.min(state.slide+1,SLIDES.length-1);save();render();return}
  if(act==='slidesDone'){track('apresentacao_concluida');state.step='lead';save();render();return}
  if(act==='leadNext'){saveLead();state.step='questions';state.qStep=0;save();render();return}
@@ -625,7 +682,7 @@ function completeMission(){
  toast(after===3&&before<3?'O canteiro '+st.nome+' está em flor. Uma borboleta veio visitar.':after>before?'Algo cresceu no seu jardim':'Guardado com carinho');
  go({mission:null});
 }
-render();track('app_aberto');
+render();track('app_aberto');loadRelatos();
 if('serviceWorker' in navigator&&!(window.RevivaNative&&RevivaNative.isNative)){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
 </script>
 </body>
