@@ -1,6 +1,6 @@
 // Reviva service worker — cache simples para funcionar offline.
-const CACHE = 'reviva-v2-7';
-const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.svg', '/icon-512.svg', '/icon-192.png', '/icon-512.png', '/favicon.svg', '/apple-touch-icon.png', '/privacidade.html', '/termos.html', '/suporte.html'];
+const CACHE = 'reviva-v2-8';
+const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.svg', '/icon-512.svg', '/icon-192.png', '/icon-512.png', '/favicon.svg', '/apple-touch-icon.png', '/privacidade.html', '/termos.html', '/suporte.html', '/native.js', '/fonts/fonts.css', '/fonts/fraunces-latin-400-normal.woff2', '/fonts/fraunces-latin-500-normal.woff2', '/fonts/fraunces-latin-600-normal.woff2', '/fonts/karla-latin-400-normal.woff2', '/fonts/karla-latin-500-normal.woff2', '/fonts/karla-latin-700-normal.woff2', '/fonts/karla-latin-800-normal.woff2'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });

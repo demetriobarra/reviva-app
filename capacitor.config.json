@@ -1,0 +1,13 @@
+{
+  "appId": "online.appreviva.app",
+  "appName": "ReViva",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#FBF7F2",
+    "scheme": "ReViva"
+  },
+  "plugins": {
+    "LocalNotifications": { "iconColor": "#4A3B52" }
+  }
+}

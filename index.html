@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>REVIVA</title>
 <meta name="description" content="Reviva — um jardim para atravessar o luto no seu tempo.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="/native.js"></script>
 <link rel="manifest" href="/manifest.json">
 <script defer src="/_vercel/insights/script.js"></script>
 <meta name="theme-color" content="#FBF7F2">
@@ -299,7 +298,7 @@ let state=load();if(!state.uid){state.uid=blank().uid;save()}
 let route={tab:'jardim',station:null,mission:null,seg:'diario',sub:null};
 function load(){try{const r=localStorage.getItem(STORE);if(r){return Object.assign(blank(),JSON.parse(r))}}catch(e){}return blank()}
 function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
-function send(obj){if(!CONFIG.SHEETS_URL)return;try{const body=JSON.stringify(Object.assign({uid:state.uid,origem:location.hostname},obj));const ok=navigator.sendBeacon&&navigator.sendBeacon(CONFIG.SHEETS_URL,new Blob([body],{type:'text/plain;charset=utf-8'}));if(!ok)fetch(CONFIG.SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body}).catch(()=>{})}catch(e){}}
+function send(obj){if(!CONFIG.SHEETS_URL)return;try{const body=JSON.stringify(Object.assign({uid:state.uid,origem:(window.RevivaNative&&RevivaNative.isNative?'app-'+RevivaNative.platform:location.hostname)},obj));const ok=navigator.sendBeacon&&navigator.sendBeacon(CONFIG.SHEETS_URL,new Blob([body],{type:'text/plain;charset=utf-8'}));if(!ok)fetch(CONFIG.SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body}).catch(()=>{})}catch(e){}}
 /* Eventos de uso: nunca enviam textos do diário, cartas, memórias ou emoções. */
 function track(evento,detalhe=''){send({evento,detalhe})}
 function saveLead(){save();send({tipo:'cadastro',evento:'cadastro',lead:state.lead,consents:state.consents})}
@@ -480,7 +479,7 @@ function renderOnboarding(){
   return `<div class="onb">${LOGO}<div class="progress"><i class="on"></i><i></i><i></i></div><h1 style="margin-top:28px">Vamos cuidar do seu acesso</h1><p class="body" style="margin-top:10px">Seus dados salvam sua jornada e permitem que a gente envie materiais de apoio, se você quiser.</p>
   <div class="stack" style="margin-top:18px"><label class="field">Como quer ser chamada<input id="fName" autocomplete="given-name" value="${esc(l.name)}" placeholder="Seu nome"></label><label class="field">WhatsApp<input id="fPhone" inputmode="tel" autocomplete="tel" value="${esc(l.phone)}" placeholder="(00) 00000-0000"></label><label class="field">E-mail (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(l.email)}" placeholder="voce@email.com"></label></div>
   <div class="card" style="margin-top:16px;padding:4px 14px">
-   <label class="consent"><input type="checkbox" id="c1" ${c.termos?'checked':''}><span>Li e aceito os <a href="/termos" target="_blank" style="color:inherit;font-weight:700">Termos de Uso</a> e a <a href="/privacidade" target="_blank" style="color:inherit;font-weight:700">Política de Privacidade</a>.</span></label>
+   <label class="consent"><input type="checkbox" id="c1" ${c.termos?'checked':''}><span>Li e aceito os <a href="/termos.html" target="_blank" style="color:inherit;font-weight:700">Termos de Uso</a> e a <a href="/privacidade.html" target="_blank" style="color:inherit;font-weight:700">Política de Privacidade</a>.</span></label>
    <label class="consent"><input type="checkbox" id="c2" ${c.sensiveis?'checked':''}><span>Autorizo o tratamento dos meus <b>dados sensíveis de saúde emocional</b> (como registros do diário) para personalizar minha jornada, conforme a LGPD. Posso apagar tudo quando quiser.</span></label>
    <label class="consent"><input type="checkbox" id="c3" ${c.naoTerapia?'checked':''}><span>Entendo que a Reviva <b>não substitui terapia nem atendimento médico</b>. Em crise, ligo para o <b>CVV 188</b> ou o <b>SAMU 192</b>.</span></label>
   </div>
@@ -501,6 +500,7 @@ function renderGarden(){
  <div class="welcome"><h1 style="font-size:23px">${greeting()}${fn?', '+esc(fn):''}.</h1><p class="body" style="margin-top:6px">${intro}</p></div>
  <div class="gardenWrap">${gardenSVG()}</div>
  ${next?`<div class="pad" style="margin:14px 0 12px"><button class="nextCard" data-station="${next.st.id}" data-mission="${next.m.id}"><span class="iconBox" style="width:38px;height:38px;border-radius:12px;background:${next.st.cor}">${ico(next.st.icon)}</span><span style="flex:1"><span class="tag">Próximo passo · ${esc(next.st.nome)}</span><br><strong style="font-size:14px">${esc(next.m.titulo)}</strong></span><span>›</span></button></div>`:''}
+ ${(window.RevivaNative&&RevivaNative.reminders.available&&!(state.rem&&(state.rem.on||state.rem.asked))&&Object.keys(state.done||{}).length>0)?`<div class="pad" style="margin:0 0 12px"><div class="card"><h3>Quer um lembrete gentil?</h3><p class="small" style="margin:6px 0 12px">Um convite por dia para voltar ao seu jardim, no horário que for melhor para você.</p><div class="row2"><button class="secondary" data-act="remOn" data-hour="20">Sim, às 20h</button><button class="secondary" data-act="remLater">Agora não</button></div></div></div>`:''}
  <div class="quick"><button data-go="checkin"><span class="qicon" style="background:${C.rose}">${ico('heart')}</span><b>Check-in de hoje</b><small>Como você está?</small></button><button data-go="noite"><span class="qicon" style="background:${C.plum}">${ico('moon')}</span><b>Noite difícil</b><small>Respirar e se acalmar</small></button></div>
  <div style="height:10px"></div>`;
 }
@@ -557,8 +557,9 @@ function renderPerfil(){
  <div class="stack pad">
   <div class="card"><h3>${esc(state.lead.name||'Você')}</h3><p class="small" style="margin:4px 0 0">${esc(a.situacao||'')}${a.tempo?' · '+esc(a.tempo):''}</p></div>
   <div class="card"><h3 style="margin-bottom:10px">Canteiros</h3>${STATIONS.map(s=>{const p=Math.round(stationProgress(s)*100);return `<div style="display:flex;align-items:center;gap:10px;margin:8px 0"><span style="width:110px;font-size:13px;font-weight:700">${esc(s.nome)}</span><span style="flex:1;height:6px;background:var(--border);border-radius:6px;overflow:hidden"><i style="display:block;height:100%;width:${p}%;background:${s.cor}"></i></span></div>`}).join('')}</div>
+  ${(window.RevivaNative&&RevivaNative.reminders.available)?(()=>{const rm=state.rem||{};return `<div class="card"><h3>Lembretes gentis</h3><p class="small" style="margin:6px 0 12px">${rm.on?'Ativos, todos os dias às '+rm.hour+'h. Você pode mudar o horário ou desligar quando quiser.':'Um convite diário, leve, para voltar ao seu jardim. Sem cobrança.'}</p><div class="row2" style="grid-template-columns:1fr 1fr 1fr">${[9,15,20].map(h=>`<button class="secondary" data-act="remOn" data-hour="${h}" style="${rm.on&&rm.hour===h?'border-color:var(--plum);color:var(--plum);font-weight:800':''}">${h}h</button>`).join('')}</div>${rm.on?'<button class="secondary" data-act="remOff" style="margin-top:10px;width:100%">Desligar lembretes</button>':''}</div>`})():''}
   <div class="card"><h3>Seus dados</h3><p class="small" style="margin:6px 0 12px">Seus registros ficam salvos neste aparelho. Você pode apagar tudo a qualquer momento.</p><div class="row2"><button class="secondary" data-act="refazer">Refazer perguntas</button><button class="secondary" style="color:var(--danger)" data-act="apagar">Apagar meus dados</button></div></div>
-  <div class="card"><h3>Ajuda e informações</h3><p class="small" style="margin:8px 0 0;line-height:2"><a href="/suporte" style="color:var(--rose2)">Suporte e perguntas frequentes</a><br><a href="/privacidade" style="color:var(--rose2)">Política de Privacidade</a><br><a href="/termos" style="color:var(--rose2)">Termos de Uso</a></p></div>
+  <div class="card"><h3>Ajuda e informações</h3><p class="small" style="margin:8px 0 0;line-height:2"><a href="/suporte.html" style="color:var(--rose2)">Suporte e perguntas frequentes</a><br><a href="/privacidade.html" style="color:var(--rose2)">Política de Privacidade</a><br><a href="/termos.html" style="color:var(--rose2)">Termos de Uso</a></p></div>
   <p class="small" style="text-align:center;margin:8px 0 26px">Reviva não substitui terapia ou atendimento médico.<br>Em crise: CVV 188 · SAMU 192</p>
  </div>`;
 }
@@ -599,7 +600,10 @@ document.addEventListener('click',e=>{
  if(t.id==='breath'){startBreath();return}
  if(act==='complete'){completeMission();return}
  if(act==='addDiary'){const emos=[...document.querySelectorAll('#emos .emo.on')].map(x=>x.dataset.emo);const txt=($('#mText')?.value||'').trim();if(!emos.length&&!txt){toast('Marque uma emoção ou escreva algo');return}state.diary.unshift({data:today(),emos,texto:txt});save();track('diario');toast('Registrado no seu diário');render();return}
- if(act==='apagar'){if(confirm('Apagar todos os seus dados e registros deste aparelho? Isso não pode ser desfeito.')){track('dados_apagados');try{localStorage.removeItem(STORE)}catch(_){}state=blank();route={tab:'jardim',station:null,mission:null,seg:'diario'};render()}return}
+ if(act==='remOn'){const h=+t.closest('[data-act]').dataset.hour||20;RevivaNative.reminders.enable(h).then(ok=>{state.rem=Object.assign({},state.rem,{asked:true,on:!!ok,hour:h});save();track('lembrete',ok?'on_'+h:'negado');toast(ok?'Lembrete ativado para as '+h+'h':'Para receber lembretes, permita notificações nos Ajustes do iPhone');render()});return}
+ if(act==='remOff'){RevivaNative.reminders.disable();state.rem=Object.assign({},state.rem,{on:false,asked:true});save();track('lembrete','off');toast('Lembretes desligados');render();return}
+ if(act==='remLater'){state.rem=Object.assign({},state.rem,{asked:true});save();render();return}
+ if(act==='apagar'){if(confirm('Apagar todos os seus dados e registros deste aparelho? Isso não pode ser desfeito.')){if(window.RevivaNative)RevivaNative.reminders.disable();track('dados_apagados');try{localStorage.removeItem(STORE)}catch(_){}state=blank();route={tab:'jardim',station:null,mission:null,seg:'diario'};render()}return}
  if(act==='refazer'){state.qStep=0;state.step='questions';state.onboarded=false;save();render();return}
 });
 document.addEventListener('change',e=>{const c=e.target.closest('[data-check]');if(c){const [id,i]=c.dataset.check.split(':');state.checks[id]=state.checks[id]||{};state.checks[id][i]=c.checked;save()}});
@@ -616,13 +620,13 @@ function completeMission(){
  if(m.tipo==='checkin'){const emos=[...document.querySelectorAll('#emos .emo.on')].map(x=>x.dataset.emo);if(!emos.length&&!txt){toast('Marque pelo menos uma emoção');return}state.diary.unshift({data:today(),emos,texto:txt})}
  if(state.done[m.id]&&!['carta','memoria','checkin','escrita'].includes(m.tipo)){go({mission:null});return}
  const before=stageOf(stationProgress(st));
- state.done[m.id]=Date.now();save();
+ state.done[m.id]=Date.now();save();if(window.RevivaNative)RevivaNative.haptic();
  const after=stageOf(stationProgress(st));track(m.tipo==='checkin'?'checkin':'passo_concluido',m.id);if(after===3&&before<3)track('canteiro_floresceu',st.id);
  toast(after===3&&before<3?'O canteiro '+st.nome+' está em flor. Uma borboleta veio visitar.':after>before?'Algo cresceu no seu jardim':'Guardado com carinho');
  go({mission:null});
 }
 render();track('app_aberto');
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
+if('serviceWorker' in navigator&&!(window.RevivaNative&&RevivaNative.isNative)){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
 </script>
 </body>
 </html>
