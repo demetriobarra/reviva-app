@@ -613,7 +613,7 @@ function renderGarden(){
  <div style="height:10px"></div>`;
 }
 function nextMission(){const order=recent()?STATIONS.filter(s=>s.id==='acolhimento'||s.id==='reancoragem'):STATIONS;for(const st of order){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}if(recent()){for(const st of STATIONS){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}}return null}
-function dayCard(st){if(trk()==='separacao')return '';const src=DAY.audios[st.id];if(!src&&window.RevivaNative&&RevivaNative.isNative)return '';const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
+function dayCard(st){const src=DAY.audios[st.id];if(!src&&window.RevivaNative&&RevivaNative.isNative)return '';const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
  return `<div class="dayCard"><div class="dayAvatar">${av}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><strong style="font-size:14px">Recado da Day</strong>${src?'':'<span class="soon">em breve</span>'}</div><div class="small">${src?'Um áudio da Day para esta estação.':'Um áudio da Day, cofundadora da Reviva, para esta estação.'}</div>${src?`<audio controls preload="none" src="${esc(src)}"></audio>`:''}</div></div>`}
 function renderStation(){
  const st=STATIONS.find(s=>s.id===route.station);
