@@ -1,7 +1,7 @@
 // Copia os arquivos do site (raiz do repositório) para www/, que o Capacitor empacota no app.
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..'), out = path.join(root, 'www');
-const files = ['index.html', 'native.js', 'conteudo.js', 'livro.js', 'relatos.json', 'manifest.json', 'privacidade.html', 'suporte.html', 'termos.html',
+const files = ['index.html', 'native.js', 'plantas.js', 'conteudo.js', 'livro.js', 'relatos.json', 'manifest.json', 'privacidade.html', 'suporte.html', 'termos.html',
   'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-192.svg', 'icon-512.png', 'icon-512.svg'];
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'fonts'), { recursive: true });
