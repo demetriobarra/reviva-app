@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>REVIVA</title>
+<meta name="description" content="Reviva — um jardim para atravessar o luto no seu tempo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="/manifest.json">
+<script defer src="/_vercel/insights/script.js"></script>
+<meta name="theme-color" content="#FBF7F2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="REVIVA">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  --bg:#fbf7f2;--cream:#f1eae0;--card:#fff;--border:#e9e0d6;
+  --ink:#2e2436;--soft:#544a5e;--mute:#6c6276;
+  --plum:#4a3b52;--gold:#c79a4b;--rose:#c08499;--rose2:#a86f8a;--sage:#7c9188;--sky:#7fa1ac;--terra:#9b7e6b;
+  --goldSoft:#fff8eb;--goldLine:#efdcb9;--danger:#a4525e;
+  --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:var(--cream);font-family:Karla,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+p,h1,h2,h3{margin-top:0}
+.stage{height:100%;display:grid;place-items:center;padding:24px 12px}
+.phone{width:min(400px,100%);height:min(820px,calc(100vh - 32px));background:var(--bg);border-radius:36px;box-shadow:0 30px 60px -20px rgba(46,36,54,.35),0 0 0 8px #fff,0 0 0 9px var(--border);overflow:hidden;position:relative}
+@media(max-width:520px){.stage{padding:0}.phone{width:100%;height:100%;border-radius:0;box-shadow:none}}
+#app{position:absolute;inset:0;display:flex;flex-direction:column}
+.view{flex:1;overflow:auto;scrollbar-width:none;padding-top:var(--safe-t)}
+.view::-webkit-scrollbar{display:none}
+.pad{padding:0 22px}
+.wordmark{display:flex;align-items:center}.wordmark svg{display:block;height:30px;width:auto}
+.wordmark strong{font-family:Fraunces,Georgia,serif;font-style:italic;font-size:26px;font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
+.top{display:flex;align-items:center;justify-content:space-between;padding:22px 22px 10px}
+.title{font-family:Fraunces,Georgia,serif;font-size:22px}
+h1{font-family:Fraunces,Georgia,serif;font-size:26px;line-height:1.22;font-weight:500;margin-bottom:0}
+h2{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:500;margin-bottom:0;line-height:1.3}
+h3{font-size:14px;font-weight:800;margin-bottom:0}
+.body{font-size:15px;line-height:1.6;color:var(--soft)}
+.small{font-size:12.5px;color:var(--soft);line-height:1.5}
+.eyebrow{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--gold)}
+.primary{border:0;border-radius:14px;background:var(--gold);color:#fff;font-weight:800;font-size:15px;padding:15px;width:100%}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.secondary{border:1px solid var(--border);border-radius:14px;background:var(--card);font-weight:800;font-size:14.5px;padding:14px;width:100%}
+.link{background:none;border:0;color:var(--soft);font-weight:700;font-size:14px;padding:8px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 16px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.notice{background:var(--goldSoft);border:1px solid var(--goldLine);border-radius:14px;padding:12px 14px;color:var(--soft);font-size:12.5px;line-height:1.5}
+.field{display:grid;gap:7px;color:var(--soft);font-size:12.5px;font-weight:700}
+.field input,textarea,select{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);font-size:15px;width:100%;outline:none}
+.field input:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:none;min-height:140px;line-height:1.55}
+.backbar{display:flex;align-items:center;gap:8px;padding:18px 14px 4px}
+.back{background:transparent;border:0;padding:6px 8px;font-size:22px;line-height:1}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--soft);font-weight:800}
+/* onboarding */
+.onb{min-height:100%;display:flex;flex-direction:column;padding:42px 26px calc(26px + var(--safe-b))}
+.slideArt{flex:1;display:grid;place-items:center;min-height:240px}
+.dots{display:flex;gap:6px;justify-content:center;margin:18px 0}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--border)}
+.dots i.on{background:var(--plum)}
+.navrow{display:flex;justify-content:space-between;align-items:center}
+.progress{display:flex;gap:6px;margin-top:26px}
+.progress i{height:4px;flex:1;border-radius:4px;background:var(--border)}
+.progress i.on{background:var(--gold)}
+.choices{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.choice{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;text-align:left;font-weight:700;font-size:15px;gap:10px}
+.choice.selected{border-color:var(--gold);background:var(--goldSoft)}
+.choice span{font-weight:500;color:var(--soft);font-size:12.5px;display:block;margin-top:3px}
+.consent{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;font-size:13px;line-height:1.5;color:var(--soft);padding:12px 0;border-bottom:1px solid var(--border)}
+.consent:last-child{border-bottom:0}
+.consent input{width:20px;height:20px;accent-color:var(--plum);margin:1px 0 0}
+.consent b{color:var(--ink)}
+/* garden */
+.gardenWrap{padding:0 10px}
+.garden{width:100%;display:block}
+.bed{cursor:pointer}
+.bedLabel{font-size:12.5px;font-weight:800;fill:var(--ink)}
+.bedSub{font-size:10.5px;fill:var(--soft)}
+.sway{transform-origin:0 0;animation:sway 6s ease-in-out infinite}
+.flutter{transform-origin:0 0;animation:flutter .9s ease-in-out infinite}
+@keyframes flutter{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.35)}}
+.plantCard{display:flex;gap:12px;align-items:center;margin:0 22px 14px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px 14px 10px 8px}
+@keyframes sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+@media(prefers-reduced-motion:reduce){.sway,.flutter{animation:none}}
+.welcome{margin:4px 22px 14px}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 22px 18px}
+.quick button{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:left}
+.quick b{display:block;font-size:14px;margin-top:6px}
+.quick small{color:var(--soft);font-size:12px}
+.qicon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:15px}
+.ico{width:58%;height:58%;display:block}
+.nextCard{width:100%;text-align:left;display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 14px}
+.dayCard{display:flex;gap:12px;align-items:center;margin:0 22px 16px;background:#f7eef2;border:1px solid #ecd9e1;border-radius:16px;padding:12px 14px}
+.dayAvatar{width:44px;height:44px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-family:Fraunces,Georgia,serif;font-size:18px;flex:none;overflow:hidden}
+.dayAvatar img{width:100%;height:100%;object-fit:cover}
+.dayCard audio{width:100%;margin-top:8px;height:34px}
+.soon{font-size:10.5px;font-weight:900;color:var(--rose2);background:#fff;border:1px solid #ecd9e1;border-radius:999px;padding:3px 8px;white-space:nowrap}
+/* station */
+.stationHero{display:flex;align-items:center;gap:14px;margin:6px 22px 8px}
+.iconBox{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-size:22px;flex:none}
+.missionCard{display:grid;grid-template-columns:28px 1fr 14px;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 16px;width:100%}
+.check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center;color:#fff;font-size:13px}
+.done .check{background:var(--sage);border-color:var(--sage)}
+.missionView{padding:6px 24px calc(24px + var(--safe-b));min-height:calc(100% - 60px);display:flex;flex-direction:column}
+.content p{font-size:15px;line-height:1.65;color:var(--soft);margin-bottom:12px}
+.content ul{padding-left:18px;margin:0 0 12px;color:var(--soft);font-size:15px;line-height:1.6}
+.content strong{color:var(--ink)}
+.cl{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);font-size:14.5px;line-height:1.45}
+.cl input{width:20px;height:20px;accent-color:var(--sage);margin-top:1px;flex:none}
+.emos{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.emo{border:1px solid var(--border);background:var(--card);border-radius:999px;padding:9px 13px;font-size:13.5px;font-weight:700;color:var(--soft)}
+.emo.on{background:var(--rose);border-color:var(--rose);color:#fff}
+.breath{display:grid;place-items:center;margin:20px 0}
+.breathCircle{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,#fff 0,#f3e4ea 60%,#e8cfd9 100%);display:grid;place-items:center;transition:transform 4s ease-in-out;font-family:Fraunces,Georgia,serif;font-size:18px;color:var(--plum);text-align:center;padding:20px}
+.breathCircle.in{transform:scale(1.22)}
+/* tabs inside diario */
+.seg{display:flex;background:var(--cream);border-radius:12px;padding:4px;margin:0 22px 14px}
+.seg button{flex:1;border:0;background:transparent;padding:9px;border-radius:9px;font-weight:800;font-size:13px;color:var(--soft)}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(46,36,54,.08)}
+.entry .meta{font-size:11.5px;color:var(--mute);font-weight:700;margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap}
+.entry .txt{font-size:14.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap}
+.pillEmo{background:#f6ecf0;color:var(--rose2);border-radius:999px;padding:2px 8px;font-size:11px}
+.empty{text-align:center;color:var(--mute);font-size:13.5px;padding:28px 10px}
+/* apoio */
+.sos{background:var(--plum);color:#fff;border-radius:18px;padding:16px;margin:0 22px 14px}
+.sos h2{color:#fff}
+.sos p{color:#e7dfec;font-size:13.5px;line-height:1.5;margin:6px 0 12px}
+.sosBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sosBtns a{display:block;text-align:center;background:#fff;color:var(--plum);text-decoration:none;font-weight:800;border-radius:12px;padding:12px 8px;font-size:14px}
+.sosBtns a.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.apoioCard{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start;position:relative}
+.apoioIcon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:900}
+.lockTag,.freeTag{position:absolute;right:12px;top:12px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900}
+.lockTag{background:var(--goldSoft);border:1px solid var(--goldLine);color:var(--gold)}
+.freeTag{background:#eef4ef;border:1px solid #dbe6db;color:#56705f}
+/* bottom nav */
+.bottom{background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 10px calc(10px + var(--safe-b));gap:2px}
+.tab{flex:1;background:transparent;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--mute);font-size:10.5px;font-weight:800}
+.tab svg{width:22px;height:22px}
+.tab.on{color:var(--plum)}
+.toast{position:absolute;left:50%;top:calc(18px + var(--safe-t));transform:translateX(-50%);background:var(--plum);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;z-index:20}
+.toast.on{opacity:1}
+.profileRing{display:flex;justify-content:center;margin:8px 0 20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div id="app"></div><div class="toast" id="toast"></div></div></div>
+<script>
+/* ============================================================
+   REVIVA v2 — app de página única, sem dependências.
+   Dados ficam salvos só no aparelho (localStorage).
+   TODO backend: enviar `state.lead` e consentimentos para o CRM/servidor
+   na função saveLead() quando houver API.
+   ============================================================ */
+const LOGO=`<div class="wordmark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426 120" height="30" role="img" aria-label="Reviva"><g transform="translate(0 0) scale(1.2)"><path d="M50 86 C33 72 21 50 20 20 C39 32 52 55 50 86 Z" fill="#C08499"/><path d="M50 86 C67 72 79 50 80 20 C61 32 48 55 50 86 Z" fill="#4A3B52"/><circle cx="50" cy="24" r="6" fill="#C79A4B"/></g><path fill="#4A3B52" d="M153.84 44.752 154.368 52.288Q154.608 51.568 154.89600000000002 50.896Q156.864 46.192 160.07999999999998 43.816Q163.296 41.44 166.992 41.44Q171.552 41.44 174.048 44.032Q176.544 46.624 176.544 51.472Q176.544 55.792 174.768 57.903999999999996Q172.992 60.016 170.16 60.016Q167.28 60.016 165.792 58.480000000000004Q164.304 56.944 164.304 54.208V52.48Q164.256 50.944 163.584 50.2Q162.912 49.455999999999996 161.376 49.455999999999996Q159.696 49.455999999999996 158.136 50.848Q156.576 52.24 155.59199999999998 55.072Q154.608 57.903999999999996 154.608 62.32V80.272Q154.608 81.664 155.16 82.312Q155.712 82.96 157.152 83.2L161.28 83.824Q162.38400000000001 84.016 162.936 84.54400000000001Q163.488 85.072 163.488 85.984Q163.488 86.944 162.792 87.47200000000001Q162.096 88.0 160.8 88.0H138.38400000000001Q137.04 88.0 136.416 87.47200000000001Q135.792 86.944 135.792 86.032Q135.792 85.312 136.224 84.80799999999999Q136.656 84.304 137.568 83.968L139.44 83.488Q140.304 83.2 140.712 82.50399999999999Q141.12 81.80799999999999 141.12 80.32V52.912Q141.12 51.664 140.76 51.135999999999996Q140.4 50.608 139.584 50.464L137.04 50.272Q136.176 50.08 135.79199999999997 49.647999999999996Q135.408 49.216 135.408 48.544Q135.408 47.728 135.88799999999998 47.248000000000005Q136.368 46.768 137.616 46.288L146.352 43.12Q148.704 42.208 149.808 41.944Q150.912 41.68 151.536 41.68Q152.59199999999998 41.68 153.12 42.376Q153.648 43.071999999999996 153.84 44.752Z M225.744 59.632Q225.744 62.176 224.304 63.544000000000004Q222.864 64.912 220.08 64.912H193.728Q194.4 71.584 197.904 75.28Q202.22400000000002 79.936 209.472 79.936Q213.696 79.936 216.888 78.256Q220.08 76.576 221.856 73.456Q222.72 72.496 223.224 72.16Q223.728 71.824 224.256 71.824Q225.024 71.824 225.36 72.52Q225.696 73.216 225.696 74.176Q225.50400000000002 78.208 222.81600000000003 81.64Q220.12800000000001 85.072 215.568 87.136Q211.008 89.2 205.104 89.2Q198.144 89.2 192.768 86.344Q187.392 83.488 184.344 78.328Q181.29600000000002 73.168 181.29600000000002 66.256Q181.29600000000002 59.007999999999996 184.20000000000002 53.391999999999996Q187.104 47.775999999999996 192.52800000000002 44.608Q197.952 41.44 205.488 41.44Q211.92000000000002 41.44 216.45600000000002 43.768Q220.99200000000002 46.096 223.368 50.2Q225.744 54.304 225.744 59.632ZM209.76000000000002 61.263999999999996Q212.208 61.263999999999996 212.208 59.056Q212.208 52.72 209.904 49.432Q207.60000000000002 46.144 203.71200000000002 46.144Q200.73600000000002 46.144 198.43200000000002 47.968Q196.12800000000001 49.792 194.832 53.152Q193.536 56.512 193.536 61.263999999999996Z"/><path fill="#C08499" d="M258.384 88.384H253.488Q252.0 88.384 250.96800000000002 87.616Q249.936 86.848 249.264 85.264L235.15200000000002 50.272Q234.38400000000001 48.448 233.88 47.824Q233.376 47.199999999999996 232.656 47.008L231.12 46.576Q230.20800000000003 46.288 229.824 45.80799999999999Q229.44000000000003 45.327999999999996 229.44000000000003 44.56Q229.44000000000003 43.6 230.13600000000002 43.072Q230.83200000000002 42.544 231.984 42.544H253.488Q256.03200000000004 42.544 256.03200000000004 44.56Q256.03200000000004 45.327999999999996 255.60000000000002 45.80799999999999Q255.168 46.288 254.06400000000002 46.528L252.288 46.864Q250.08 47.344 249.64800000000002 48.495999999999995Q249.216 49.647999999999996 250.32000000000002 52.528L260.40000000000003 78.496L270.24 52.528Q271.344 49.647999999999996 270.88800000000003 48.495999999999995Q270.432 47.344 268.272 46.864L266.44800000000004 46.528Q265.44 46.288 264.98400000000004 45.80799999999999Q264.528 45.327999999999996 264.528 44.56Q264.528 43.6 265.20000000000005 43.072Q265.872 42.544 267.024 42.544H280.08000000000004Q281.28000000000003 42.544 281.952 43.072Q282.624 43.6 282.624 44.56Q282.624 45.232 282.24 45.736000000000004Q281.856 46.24 280.8 46.528L279.312 46.864Q278.40000000000003 47.104 277.65600000000006 48.256Q276.91200000000003 49.408 275.808 52.192L262.56 85.552Q261.93600000000004 87.232 260.832 87.80799999999999Q259.728 88.384 258.384 88.384Z M305.52000000000004 44.704V80.32Q305.52000000000004 81.80799999999999 305.928 82.50399999999999Q306.336 83.2 307.20000000000005 83.488L309.02400000000006 83.968Q309.93600000000004 84.256 310.36800000000005 84.75999999999999Q310.8 85.264 310.8 86.032Q310.8 86.944 310.17600000000004 87.47200000000001Q309.552 88.0 308.16 88.0H289.24800000000005Q287.90400000000005 88.0 287.28000000000003 87.47200000000001Q286.656 86.944 286.656 86.032Q286.656 85.312 287.088 84.80799999999999Q287.52000000000004 84.304 288.432 83.968L290.30400000000003 83.488Q291.168 83.152 291.576 82.47999999999999Q291.98400000000004 81.80799999999999 291.98400000000004 80.32V52.816Q291.98400000000004 51.568 291.624 51.04Q291.264 50.512 290.44800000000004 50.368L287.90400000000005 50.176Q287.04 49.984 286.65600000000006 49.552Q286.27200000000005 49.12 286.27200000000005 48.448Q286.27200000000005 47.632 286.72800000000007 47.152Q287.184 46.672 288.48 46.192L297.408 42.928Q299.28000000000003 42.256 300.408 41.968Q301.53600000000006 41.68 302.30400000000003 41.68Q303.93600000000004 41.68 304.72800000000007 42.519999999999996Q305.52000000000004 43.36 305.52000000000004 44.704ZM297.696 34.336Q293.85600000000005 34.336 291.528 32.343999999999994Q289.20000000000005 30.351999999999997 289.20000000000005 27.135999999999996Q289.20000000000005 23.92 291.528 21.976Q293.85600000000005 20.031999999999996 297.696 20.031999999999996Q301.58400000000006 20.031999999999996 303.91200000000003 21.976Q306.24 23.92 306.24 27.135999999999996Q306.24 30.351999999999997 303.91200000000003 32.343999999999994Q301.58400000000006 34.336 297.696 34.336Z M342.576 88.384H337.68000000000006Q336.19200000000006 88.384 335.1600000000001 87.616Q334.12800000000004 86.848 333.4560000000001 85.264L319.34400000000005 50.272Q318.576 48.448 318.072 47.824Q317.56800000000004 47.199999999999996 316.84800000000007 47.008L315.31200000000007 46.576Q314.40000000000003 46.288 314.0160000000001 45.80799999999999Q313.63200000000006 45.327999999999996 313.63200000000006 44.56Q313.63200000000006 43.6 314.3280000000001 43.072Q315.02400000000006 42.544 316.17600000000004 42.544H337.68000000000006Q340.22400000000005 42.544 340.22400000000005 44.56Q340.22400000000005 45.327999999999996 339.79200000000003 45.80799999999999Q339.36000000000007 46.288 338.25600000000003 46.528L336.4800000000001 46.864Q334.27200000000005 47.344 333.84000000000003 48.495999999999995Q333.4080000000001 49.647999999999996 334.51200000000006 52.528L344.59200000000004 78.496L354.4320000000001 52.528Q355.53600000000006 49.647999999999996 355.08000000000004 48.495999999999995Q354.624 47.344 352.46400000000006 46.864L350.64000000000004 46.528Q349.63200000000006 46.288 349.17600000000004 45.80799999999999Q348.72 45.327999999999996 348.72 44.56Q348.72 43.6 349.39200000000005 43.072Q350.0640000000001 42.544 351.21600000000007 42.544H364.27200000000005Q365.47200000000004 42.544 366.144 43.072Q366.81600000000003 43.6 366.81600000000003 44.56Q366.81600000000003 45.232 366.432 45.736000000000004Q366.04800000000006 46.24 364.9920000000001 46.528L363.504 46.864Q362.59200000000004 47.104 361.84800000000007 48.256Q361.10400000000004 49.408 360.00000000000006 52.192L346.75200000000007 85.552Q346.12800000000004 87.232 345.02400000000006 87.80799999999999Q343.9200000000001 88.384 342.576 88.384Z M371.184 77.968Q371.184 71.968 376.53600000000006 68.27199999999999Q381.88800000000003 64.576 391.48800000000006 64.576Q394.60800000000006 64.576 397.15200000000004 65.104Q398.112 65.29599999999999 399.02400000000006 65.584V52.048Q399.02400000000006 48.688 397.32000000000005 46.84Q395.61600000000004 44.992 392.49600000000004 44.992Q389.66400000000004 44.992 388.12800000000004 46.19199999999999Q386.59200000000004 47.391999999999996 386.59200000000004 49.168V53.391999999999996Q386.59200000000004 56.272 384.672 57.831999999999994Q382.75200000000007 59.391999999999996 379.24800000000005 59.391999999999996Q376.27200000000005 59.391999999999996 374.73600000000005 57.976Q373.20000000000005 56.56 373.20000000000005 54.112Q373.20000000000005 51.088 375.696 48.184Q378.19200000000006 45.28 383.0400000000001 43.384Q387.88800000000003 41.488 394.992 41.488Q403.82400000000007 41.488 408.12000000000006 45.064Q412.41600000000005 48.64 412.41600000000005 54.736V79.696Q412.41600000000005 81.04 412.9680000000001 81.712Q413.52000000000004 82.384 414.528 82.384Q415.58400000000006 82.384 416.1120000000001 81.88Q416.64000000000004 81.376 417.02400000000006 80.848Q417.264 80.512 417.552 80.29599999999999Q417.84000000000003 80.08 418.27200000000005 80.08Q418.84800000000007 80.08 419.1360000000001 80.512Q419.42400000000004 80.944 419.42400000000004 81.664Q419.42400000000004 83.296 418.29600000000005 85.024Q417.16800000000006 86.752 414.93600000000004 87.976Q412.70400000000006 89.2 409.34400000000005 89.2Q405.07200000000006 89.2 402.528 87.232Q400.56000000000006 85.792 400.08000000000004 83.44Q397.872 85.744 394.75200000000007 87.136Q390.288 89.2 385.29600000000005 89.2Q379.00800000000004 89.2 375.096 86.08Q371.184 82.96 371.184 77.968ZM399.02400000000006 69.03999999999999Q398.064 68.656 397.10400000000004 68.416Q395.37600000000003 67.984 393.408 67.984Q389.42400000000004 67.984 387.192 70.024Q384.96000000000004 72.064 384.96000000000004 75.66399999999999Q384.96000000000004 79.264 386.85600000000005 81.184Q388.75200000000007 83.104 391.77600000000007 83.104Q394.36800000000005 83.104 396.76800000000003 81.904Q397.968 81.328 399.02400000000006 80.464Z"/></svg></div>`;
+const C={plum:'#4A3B52',gold:'#C79A4B',rose:'#C08499',rose2:'#A86F8A',sage:'#7C9188',sky:'#7FA1AC',terra:'#9B7E6B'};
+const STORE='reviva:v2';
+/* URL do Apps Script da planilha "REVIVA — Cadastros e Uso" (termina em /exec). Vazio = não envia nada. */
+const CONFIG={SHEETS_URL:'https://script.google.com/macros/s/AKfycbzMUGqfkltx6Kc4v2E_rh7RHIl9qBh7pqIUaPE_1XWAZe_dwvnD2Oz0lkILx2TuBzBzYQ/exec'};
+
+/* ---------- Conteúdo: 6 estações do método ---------- */
+const STATIONS=[
+{id:'acolhimento',nome:'Acolhimento',sub:'Chegar com calma',cor:C.rose,icon:'sun',
+ intro:'Aqui não existe jeito certo de sentir. A primeira estação é só para você chegar, respirar e ser ouvida.',
+ missoes:[
+  {id:'a1',tipo:'escrita',titulo:'Conte sua história, do seu jeito',dur:'10 min',
+   texto:'<p>Não existe forma certa de começar. Escreva como chegou até aqui: o que aconteceu, quanto tempo faz, o que mudou e o que pesa mais agora.</p><p>Ninguém vai ler isso além de você.</p>',placeholder:'Eu cheguei até aqui porque...'},
+  {id:'a2',tipo:'checkin',titulo:'Como você está chegando hoje?',dur:'2 min',
+   texto:'<p>Marque o que você sente agora, sem julgamento. Pode ser mais de uma coisa — no luto, quase sempre é.</p>'},
+  {id:'a3',tipo:'respiracao',titulo:'Primeiros socorros: respirar junto',dur:'3 min',
+   texto:'<p>Quando a dor aperta, o corpo entra em alerta. Respirar devagar avisa ao corpo que, neste minuto, você está segura.</p><p>Inspire acompanhando o círculo crescer e solte o ar quando ele diminuir.</p>'},
+  {id:'a4',tipo:'leitura',titulo:'O que é normal sentir no começo',dur:'4 min',
+   texto:'<p>Nas primeiras semanas e meses é comum sentir <strong>cansaço extremo, esquecimento, irritação, culpa, alívio, raiva e saudade</strong> — às vezes tudo no mesmo dia.</p><p>O luto não segue fases em ordem nem tem prazo. Ele vem em ondas: dias mais leves e dias em que tudo volta.</p><p>Procure ajuda profissional se, por várias semanas, você não conseguir comer, dormir ou cuidar do básico, ou se surgirem pensamentos de não querer viver. Nesses momentos, ligue para o <strong>CVV no 188</strong> (24h, gratuito).</p>'}
+ ]},
+{id:'travessia',nome:'A Travessia',sub:'O lado prático',cor:C.sky,icon:'doc',
+ intro:'Documentos, direitos e dinheiro. Uma coisa de cada vez — e você não precisa resolver tudo hoje.',
+ missoes:[
+  {id:'t1',tipo:'checklist',titulo:'Documentos essenciais: o que reunir',dur:'15 min',
+   texto:'<p>Uma lista para você não precisar lembrar de tudo sozinha. Marque o que já tem em mãos.</p>',
+   itens:['Certidão de óbito','RG e CPF da pessoa que faleceu','Certidão de casamento ou comprovante de união estável','Certidões de nascimento dos filhos','Documentos de imóveis e veículos','Extratos e contas bancárias','Apólices de seguro de vida','Comprovante de residência']},
+  {id:'t2',tipo:'leitura',titulo:'Pensão por morte, sem juridiquês',dur:'5 min',
+   texto:'<p>A pensão por morte do INSS é paga aos dependentes de quem contribuía ou era aposentado — como cônjuge ou companheira e filhos menores de 21 anos.</p><p><strong>Atenção ao prazo:</strong> pedindo em até 90 dias após o óbito, o benefício costuma ser pago desde a data da morte. Depois disso, conta a partir da data do pedido.</p><p>O pedido é feito pelo app ou site <strong>Meu INSS</strong> ou pelo telefone <strong>135</strong>. Na dúvida, procure um advogado previdenciário ou a Defensoria Pública.</p>'},
+  {id:'t3',tipo:'leitura',titulo:'Inventário explicado em linguagem simples',dur:'5 min',
+   texto:'<p>Inventário é o processo que organiza e transfere os bens de quem faleceu para os herdeiros.</p><ul><li>Pode ser feito <strong>em cartório</strong> (mais rápido) quando há acordo entre os herdeiros, ou <strong>na Justiça</strong>.</li><li>A lei prevê abrir o inventário em até <strong>2 meses</strong> após o óbito; o atraso pode gerar multa no imposto (ITCMD), conforme o estado.</li><li>Em qualquer caso, é preciso um advogado.</li></ul><p>Não precisa decidir nada hoje. Só saber que esse passo existe já ajuda a planejar.</p>'},
+  {id:'t4',tipo:'checklist',titulo:'Retrato financeiro, sem ansiedade',dur:'10 min',
+   texto:'<p>Um retrato simples para dar clareza. Marque o que você já conseguiu levantar.</p>',
+   itens:['O que entra todo mês (salário, pensão, outras rendas)','Contas fixas (moradia, luz, água, escola, plano de saúde)','Dívidas e parcelas em aberto','Seguros, previdência privada e investimentos','Assinaturas e débitos automáticos a cancelar']},
+  {id:'t5',tipo:'leitura',titulo:'FGTS e PIS/PASEP de quem partiu',dur:'4 min',
+   texto:'<p>Os saldos de <strong>FGTS</strong> e de <strong>PIS/PASEP</strong> da pessoa que faleceu podem ser sacados pelos dependentes.</p><ul><li>O caminho mais comum é pedir ao INSS a <strong>certidão de dependentes habilitados à pensão por morte</strong> e levá-la à Caixa (FGTS e PIS) ou ao Banco do Brasil (PASEP).</li><li>Quando não há dependentes no INSS, o saque costuma depender de <strong>alvará judicial</strong> ou do inventário.</li></ul><p>Confirme os documentos exigidos direto no banco antes de ir — as regras podem mudar.</p>'},
+  {id:'t6',tipo:'leitura',titulo:'Existe um seguro de vida?',dur:'4 min',
+   texto:'<p>Muita gente tem seguro de vida sem saber: pelo <strong>empregador</strong>, pelo <strong>banco</strong>, pelo <strong>cartão de crédito</strong>, junto com um <strong>financiamento</strong> ou em um plano de previdência.</p><p>Vale perguntar em cada um desses lugares se havia alguma apólice em nome da pessoa e quem são os beneficiários. Guarde os protocolos de cada contato.</p><p>Se houver financiamento de imóvel, o seguro habitacional pode quitar o saldo devedor — pergunte ao banco.</p>'},
+  {id:'t7',tipo:'checklist',titulo:'Contas e serviços para encerrar ou transferir',dur:'10 min',
+   texto:'<p>Não precisa ser tudo de uma vez. Marque conforme for resolvendo — e peça ajuda a alguém de confiança.</p>',
+   itens:['Contas bancárias e cartões de crédito','Linha de celular e internet','Assinaturas (streaming, aplicativos, academia)','Contas de luz, água e gás no nome da pessoa','Redes sociais (memorial ou exclusão)','Plano de saúde e convênios','Documentos do veículo']}
+ ]},
+{id:'elo',nome:'O Elo',sub:'O amor continua',cor:C.rose2,icon:'heart',
+ intro:'Seguir em frente não é esquecer. Aqui você cuida do vínculo com quem partiu — de um jeito novo.',
+ missoes:[
+  {id:'e1',tipo:'carta',titulo:'Escreva sua carta',dur:'15 min',
+   texto:'<p>Escreva para quem partiu. Diga o que ficou por dizer, conte como está sua vida, agradeça, brigue, sinta saudade.</p><p>Não precisa ser bonito nem organizado. Sua carta fica guardada só para você, na aba Diário.</p>',placeholder:'Querido(a)...'},
+  {id:'e2',tipo:'memoria',titulo:'Plante uma memória',dur:'5 min',
+   texto:'<p>Um momento, um cheiro, uma frase, uma mania. Guarde uma lembrança boa — elas vão formando o seu jardim de memórias.</p>',placeholder:'Eu lembro de quando...'},
+  {id:'e3',tipo:'escrita',titulo:'Datas que importam',dur:'5 min',
+   texto:'<p>Aniversários, datas especiais e o dia da partida costumam ser difíceis. Anote as datas que você quer atravessar com mais cuidado — e pense em um pequeno ritual para cada uma.</p>',placeholder:'Ex.: 12/03 — aniversário dele. Quero passar o dia com minha irmã.'}
+ ]},
+{id:'reancoragem',nome:'Reancoragem',sub:'Chão debaixo dos pés',cor:C.sage,icon:'anchor',
+ intro:'Rotina, corpo e sono. Pequenas âncoras para os dias voltarem a ter algum contorno.',
+ missoes:[
+  {id:'r1',tipo:'escrita',titulo:'Três âncoras para amanhã',dur:'5 min',
+   texto:'<p>Escolha três coisas pequenas e possíveis para amanhã: um copo d’água ao acordar, um banho com calma, cinco minutos de sol, uma mensagem para alguém.</p>',placeholder:'1.\n2.\n3.'},
+  {id:'r2',tipo:'respiracao',titulo:'Para noites difíceis',dur:'5 min',
+   texto:'<p>A noite costuma ser o momento mais solitário. Antes de dormir, respire acompanhando o círculo por alguns ciclos.</p><p>Se a mente acelerar, tente o 5-4-3-2-1: perceba 5 coisas que vê, 4 que toca, 3 que ouve, 2 cheiros e 1 sabor.</p>'},
+  {id:'r3',tipo:'checklist',titulo:'Cuidar do corpo esta semana',dur:'2 min',
+   texto:'<p>O luto também mora no corpo. Marque o que você conseguiu fazer — e seja gentil com o que ainda não deu.</p>',
+   itens:['Comi pelo menos duas refeições por dia','Bebi água ao longo do dia','Saí de casa ou tomei sol','Movimentei o corpo (caminhada, alongamento)','Dormi algumas noites inteiras']},
+  {id:'r4',tipo:'leitura',titulo:'Como falar com as crianças',dur:'5 min',cond:a=>a.filhos==='Sim',
+   texto:'<p>Crianças também vivem o luto — do jeito delas e em ondas, às vezes brincando logo depois de chorar.</p><ul><li>Use palavras <strong>simples e verdadeiras</strong>, como “morreu”. Evite “foi viajar” ou “está dormindo”, que confundem e assustam.</li><li>Deixe que perguntem, mesmo que repitam a mesma pergunta muitas vezes.</li><li>Mostrar que você também está triste ensina que sentir é permitido.</li><li>Mantenha o máximo possível da <strong>rotina</strong>: escola, horários, refeições.</li></ul><p>Procure um psicólogo infantil se, depois de algumas semanas, a criança tiver mudanças fortes de sono, apetite, comportamento ou rendimento escolar.</p>'}
+ ]},
+{id:'ressignificacao',nome:'Ressignificação',sub:'Dar sentido à história',cor:C.terra,icon:'pen',
+ intro:'Não é encontrar um “porquê”. É entender o que essa história deixou em você e quem você está se tornando.',
+ missoes:[
+  {id:'s1',tipo:'escrita',titulo:'O que essa pessoa me ensinou',dur:'10 min',
+   texto:'<p>Pense em algo que você aprendeu com quem partiu — um valor, um jeito de ver a vida, uma coragem. O que disso você quer levar adiante?</p>',placeholder:'Com você eu aprendi...'},
+  {id:'s2',tipo:'escrita',titulo:'Um novo capítulo',dur:'10 min',
+   texto:'<p>Se a sua vida fosse um livro, como você chamaria o capítulo que está começando agora? Escreva o título e uma frase sobre ele.</p>',placeholder:'Título: ...'},
+  {id:'s3',tipo:'leitura',titulo:'Fé e espiritualidade (opcional)',dur:'3 min',
+   texto:'<p>Para muitas pessoas, a fé é um apoio enorme no luto. Para outras, ela fica abalada — e as duas coisas são legítimas.</p><p>Se fizer sentido para você, reserve um momento de oração, meditação ou silêncio em memória de quem partiu. Se não fizer, pule esta missão sem culpa.</p>'}
+ ]},
+{id:'reviva',nome:'Reviva',sub:'Você, de novo',cor:C.plum,icon:'spark',
+ intro:'Voltar a sentir prazer não é traição. É a vida pedindo espaço de novo.',
+ missoes:[
+  {id:'v1',tipo:'escrita',titulo:'Redescubra algo que você gostava',dur:'5 min',
+   texto:'<p>Antes de tudo isso, o que te dava prazer? Escolha um passo pequeno de volta a isso — e escreva quando vai dar esse passo.</p>',placeholder:'Eu gostava de...'},
+  {id:'v2',tipo:'acao',titulo:'Reative uma conexão importante',dur:'5 min',
+   texto:'<p>Uma mensagem, uma ligação, um convite. Não precisa ser grande; precisa ser real. Quando fizer, marque como concluída.</p>'},
+  {id:'v3',tipo:'carta',titulo:'Carta para quem está chegando',dur:'10 min',
+   texto:'<p>Pense em uma mulher que está vivendo hoje o começo que você já viveu. O que você diria a ela?</p><p>Esse é o espírito Reviva: quem já atravessou, acolhe quem está chegando.</p>',placeholder:'Para você, que está chegando...'}
+ ]}
+];
+/* Recado da Day: coloque os arquivos de áudio na pasta /audio e preencha os caminhos abaixo
+   (ex.: acolhimento:'/audio/acolhimento.mp3'). Foto opcional em DAY.foto (ex.: '/day.jpg'). */
+const DAY={foto:'',audios:{acolhimento:'',travessia:'',elo:'',reancoragem:'',ressignificacao:'',reviva:''}};
+
+/* Ícones desenhados (iguais em qualquer aparelho) */
+const IC={
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>',
+ doc:'<path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4M9 12h6M9 16h4"/>',
+ heart:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+ anchor:'<circle cx="12" cy="5" r="2"/><path d="M12 7v14M8 11h8M5 14a7 7 0 0 0 14 0"/>',
+ pen:'<path d="M15.5 4.5l4 4L9 19l-5 1 1-5z"/><path d="M13.5 6.5l4 4"/>',
+ spark:'<path d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/>',
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+ check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+ scale:'<path d="M12 4v16M7 20h10M5 7h14M5 7l-2.5 6a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/>',
+ chat:'<path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>',
+ people:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M15 14.6c2.6-.4 4.6 1 5.5 4.4"/>',
+ coin:'<circle cx="12" cy="12" r="8"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.5 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1 2-2.5 2c-1.1 0-2-.4-2.5-1.2M12 6.5v1.5M12 16v1.5"/>',
+ play:'<path d="M8 5l11 7-11 7z"/>'
+};
+const ico=(k,stroke='#fff')=>`<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]||''}</svg>`;
+const EMOS=['Saudade','Tristeza','Cansaço','Raiva','Culpa','Medo','Solidão','Ansiedade','Alívio','Gratidão','Paz','Esperança'];
+const SLIDES=[
+ {t:'A perda muda tudo.',s:'E você não precisa atravessar isso sozinha.',art:'thread'},
+ {t:'Feita por quem viveu isso',s:'A Reviva nasceu da história da Day Martins, que perdeu o marido e decidiu transformar a própria travessia em cuidado.',art:'hands'},
+ {t:'Um jardim que cresce no seu tempo',s:'Seis estações, sem prazos, sem pontos, sem comparação. Cada passo faz algo florescer.',art:'sprout'},
+ {t:'Do prático ao emocional',s:'Documentos e direitos, cartas e memórias, e apoio para as noites difíceis.',art:'tools'},
+ {t:'Estamos aqui com você',s:'No seu ritmo, do seu jeito.',art:'garden'}
+];
+const QUESTIONS=[
+ {key:'situacao',label:'O que te trouxe até aqui?',opts:[['Perdi meu companheiro','Viuvez, direitos, rotina e saudade.'],['Perdi outra pessoa querida','Mãe, pai, filho, irmã, amiga...']]},
+ {key:'tempo',label:'Há quanto tempo aconteceu?',opts:[['Menos de 1 mês','Vamos começar bem devagar.'],['Entre 1 mês e 1 ano','Ajuda a ajustar o ritmo da jornada.'],['Mais de 1 ano','O luto não tem prazo.']]},
+ {key:'filhos',label:'Você tem filhos?',opts:[['Sim',''],['Não',''],['Prefiro não responder','']]}
+];
+const APOIO=[
+ ['check','Gratuito','Checklist de documentos','Lista para organizar certidões, contratos e comprovantes.',C.sky,'free','travessia'],
+ ['heart','Gratuito','Primeiros dias de luto','Material de acolhimento com linguagem simples e cuidadosa.',C.rose,'free','acolhimento'],
+ ['moon','Gratuito','Para noites difíceis','Respiração guiada e o exercício 5-4-3-2-1 para ansiedade e solidão.',C.sage,'free','reancoragem'],
+ ['scale','Plano Reviva','Orientação jurídica','Advogadas parceiras para inventário, pensão e direitos.',C.sky,'premium'],
+ ['chat','Plano Reviva','Psicólogas do luto','Atendimento com profissionais especializadas em luto.',C.rose2,'premium'],
+ ['people','Plano Reviva','Rodas por estação','Encontros online moderados com mulheres na mesma fase.',C.terra,'premium'],
+ ['coin','Plano Reviva','Organização financeira','Orçamento, dívidas e benefícios em transição de vida.',C.sage,'premium']
+];
+
+/* ---------- Estado ---------- */
+const blank=()=>({v:2,uid:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2)),onboarded:false,slide:0,step:'slides',qStep:0,lead:{},consents:{},answers:{},done:{},drafts:{},checks:{},diary:[],letters:[],memories:[],createdAt:Date.now()});
+let state=load();if(!state.uid){state.uid=blank().uid;save()}
+let route={tab:'jardim',station:null,mission:null,seg:'diario',sub:null};
+function load(){try{const r=localStorage.getItem(STORE);if(r){return Object.assign(blank(),JSON.parse(r))}}catch(e){}return blank()}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
+function send(obj){if(!CONFIG.SHEETS_URL)return;try{const body=JSON.stringify(Object.assign({uid:state.uid,origem:location.hostname},obj));const ok=navigator.sendBeacon&&navigator.sendBeacon(CONFIG.SHEETS_URL,new Blob([body],{type:'text/plain;charset=utf-8'}));if(!ok)fetch(CONFIG.SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body}).catch(()=>{})}catch(e){}}
+/* Eventos de uso: nunca enviam textos do diário, cartas, memórias ou emoções. */
+function track(evento,detalhe=''){send({evento,detalhe})}
+function saveLead(){save();send({tipo:'cadastro',evento:'cadastro',lead:state.lead,consents:state.consents})}
+
+/* ---------- Utilidades ---------- */
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const firstName=()=>((state.lead.name||'').trim().split(/\s+/)[0]||'');
+const today=()=>new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).replace('.','');
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2200)}
+function vis(st){return st.missoes.filter(m=>!m.cond||m.cond(state.answers))}
+function doneCount(st){return vis(st).filter(m=>state.done[m.id]).length}
+function stationProgress(st){return doneCount(st)/vis(st).length}
+function totalProgress(){let all=0,d=0;STATIONS.forEach(s=>vis(s).forEach(m=>{all++;if(state.done[m.id])d++}));return all?d/all:0}
+function stageOf(p){return p===0?0:p<0.5?1:p<1?2:3}
+/* o Acolhimento já nasce como broto: a pessoa entra no jardim com algo vivo */
+function plantStage(st){const s=stageOf(stationProgress(st));return st.id==='acolhimento'?Math.max(1,s):s}
+const recent=()=>{const t=state.answers.tempo||'';return t.startsWith('Menos')}
+
+/* ---------- Ilustrações ---------- */
+function plantSVG(cor,stage){
+ const soil='<ellipse cx="0" cy="2" rx="34" ry="9" fill="#e7dccd"/><ellipse cx="0" cy="0" rx="26" ry="6" fill="#d9c9b4"/>';
+ if(stage===0)return soil+'<ellipse cx="0" cy="-3" rx="5" ry="3.5" fill="#b49a7c"/>';
+ const leaf=(x,y,r,s)=>`<path d="M${x},${y} q${12*s},-10 ${22*s},-2 q${-10*s},10 ${-22*s},2z" fill="#8fa596" transform="rotate(${r} ${x} ${y})"/>`;
+ let stemH=stage===1?26:stage===2?50:62;
+ let g=soil+`<g class="sway"><path d="M0,0 C-2,${-stemH*.4} 2,${-stemH*.7} 0,${-stemH}" stroke="#7c9188" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+ g+=leaf(0,-stemH*.35,-18,1)+leaf(0,-stemH*.45,18,-1);
+ if(stage>=2)g+=leaf(0,-stemH*.7,-12,1);
+ if(stage===2)g+=`<ellipse cx="0" cy="${-stemH-6}" rx="7" ry="10" fill="${cor}"/><path d="M-6,${-stemH} q6,-6 12,0" fill="#8fa596"/>`;
+ if(stage===3){let p='';for(let i=0;i<6;i++){p+=`<ellipse cx="0" cy="${-stemH-13}" rx="7.5" ry="13" fill="${cor}" opacity=".92" transform="rotate(${i*60} 0 ${-stemH})"/>`}g+=p+`<circle cx="0" cy="${-stemH}" r="6.5" fill="#C79A4B"/>`}
+ return g+'</g>';
+}
+/* ---------- Jardim: uma planta com significado para cada estação ---------- */
+const PLANTAS={
+ acolhimento:{nome:'Camomila',sig:'A flor do chá que se oferece a quem sofre. Pequena, humilde e calmante: colo em forma de planta.'},
+ travessia:{nome:'Oliveira',sig:'Cresce devagar e resiste ao tempo. Símbolo de paz e de chão firme.'},
+ elo:{nome:'Miosótis',sig:'Seu nome popular é “não-me-esqueças”. É a flor da memória.'},
+ reancoragem:{nome:'Lavanda',sig:'Raízes fundas e um perfume que acalma. Símbolo de descanso.'},
+ ressignificacao:{nome:'Ipê',sig:'Floresce no tempo seco, antes das folhas. A beleza que nasce da secura.'},
+ reviva:{nome:'Girassol',sig:'O calor que volta. Depois dos dias nublados, a vida se vira de novo para a luz.'}
+};
+const GV={leaf:'#7C9188',leafL:'#A3B8A8',leafD:'#5E7769',stem:'#6F8A7B',bark:'#8A7058',barkD:'#6E5743'};
+const lf=(x,y,len,wid,ang,c,rib=true)=>`<g transform="translate(${x} ${y}) rotate(${ang})"><path d="M0,0 C${wid},${-len*.3} ${wid*.9},${-len*.78} 0,${-len} C${-wid*.9},${-len*.78} ${-wid},${-len*.3} 0,0Z" fill="${c}"/>${rib?`<path d="M0,-1 L0,${-len*.86}" stroke="#ffffff" stroke-opacity=".28" stroke-width=".8" fill="none"/>`:''}</g>`;
+const soil=(w=32)=>`<ellipse cx="0" cy="4" rx="${w+6}" ry="9" fill="#E9DFD1"/><path d="M${-w},2 Q0,-7 ${w},2 Q0,8 ${-w},2Z" fill="#D8C7B0"/><path d="M${-w*.55},0 q4,-2 8,0 M${w*.2},-1 q3,-2 7,0" stroke="#C6B298" stroke-width="1" fill="none" stroke-linecap="round"/>`;
+const pond=()=>`<ellipse cx="0" cy="3" rx="40" ry="10" fill="#E3ECE8"/><ellipse cx="0" cy="2" rx="34" ry="7.5" fill="#C7DAD8"/><path d="M-20,1 q6,-2 12,0 M6,4 q6,-2 12,0" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="1.2" fill="none" stroke-linecap="round"/>`;
+const stemC=(x1,y1,x2,y2,bend,w=2.4,c=GV.stem)=>`<path d="M${x1},${y1} Q${(x1+x2)/2+bend},${(y1+y2)/2} ${x2},${y2}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+function butterfly(x,y,c1,c2){return `<g transform="translate(${x} ${y})"><g class="flutter"><path d="M0,0 C-7,-9 -14,-5 -11,1 C-9,5 -3,4 0,0Z" fill="${c1}"/><path d="M0,0 C-6,3 -9,9 -4,9 C-1,8 0,4 0,0Z" fill="${c2}"/><path d="M0,0 C7,-9 14,-5 11,1 C9,5 3,4 0,0Z" fill="${c1}"/><path d="M0,0 C6,3 9,9 4,9 C1,8 0,4 0,0Z" fill="${c2}"/></g><path d="M0,-3 L0,6" stroke="#4A3B52" stroke-width="1.2" stroke-linecap="round"/></g>`}
+
+/* Girassol */
+function girassol(s){
+ if(s===1)return stemC(0,0,0,-16,1)+`<ellipse cx="-6" cy="-17" rx="6" ry="3.2" fill="${GV.leafL}" transform="rotate(-20 -6 -17)"/><ellipse cx="6" cy="-17" rx="6" ry="3.2" fill="${GV.leaf}" transform="rotate(20 6 -17)"/>`;
+ if(s===2)return stemC(0,0,2,-58,-4,2.8)+lf(0,-16,22,9,-58,GV.leaf)+lf(1,-30,24,10,55,GV.leafD)+lf(2,-44,15,6,-40,GV.leafL)+
+  `<g transform="translate(2 -62)">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M0,-6 L2,-11 L-2,-11Z" fill="#E2B85A" transform="rotate(${a})"/>`).join('')}<circle r="7" fill="#8FA77F"/><circle r="4" fill="#7E9670"/></g>`;
+ let petals='';for(let i=0;i<18;i++){petals+=`<ellipse cx="0" cy="-15" rx="3.6" ry="9.5" fill="${i%2?'#E6BE5F':'#D9A944'}" transform="rotate(${i*20})"/>`}
+ let inner='';for(let i=0;i<18;i++){inner+=`<ellipse cx="0" cy="-11" rx="2.6" ry="6.5" fill="#EFCB74" transform="rotate(${i*20+10})"/>`}
+ let dots='';for(let i=0;i<14;i++){const a=i*137.5*Math.PI/180,r=Math.sqrt(i+1)*1.9;dots+=`<circle cx="${(Math.cos(a)*r).toFixed(1)}" cy="${(Math.sin(a)*r).toFixed(1)}" r=".9" fill="#C89A55"/>`}
+ return stemC(0,0,4,-66,-6,3)+lf(0,-16,24,10,-60,GV.leaf)+lf(1,-30,26,11,58,GV.leafD)+lf(3,-46,18,7,-42,GV.leafL)+
+  `<g transform="translate(5 -72) rotate(-8)">${petals}${inner}<circle r="9.5" fill="#6E4E33"/><circle r="6.5" fill="#5A3E28"/>${dots}</g>`;
+}
+/* Camomila */
+function camFolha(x,y,ang,len){let d=`M0,0 L0,${-len}`;for(let k=1;k<5;k++){const yy=-len*k/5,w=3.2-k*.4;d+=` M0,${yy} l${-w},${-w*1.1} M0,${yy} l${w},${-w*1.1}`}return `<path d="${d}" transform="translate(${x} ${y}) rotate(${ang})" stroke="#8FA88F" stroke-width="1.1" fill="none" stroke-linecap="round"/>`}
+function camFlor(x,y,r=1){let p='';for(let i=0;i<13;i++){p+=`<ellipse cx="0" cy="${-4.6*r}" rx="${1.35*r}" ry="${3.6*r}" fill="${i%2?'#FFFFFF':'#F7F2EA'}" stroke="#E6DCCB" stroke-width=".35" transform="rotate(${i*27.7})"/>`}return `<g transform="translate(${x} ${y})">${p}<circle r="${2.9*r}" fill="#E8B84A"/><circle cx="${-.8*r}" cy="${-.9*r}" r="${1.2*r}" fill="#F2CD6B"/></g>`}
+function camomila(s){
+ const tufo=camFolha(0,0,-55,13)+camFolha(0,0,-25,15)+camFolha(0,0,5,16)+camFolha(0,0,32,14)+camFolha(0,0,60,12);
+ if(s===1)return camFolha(0,0,-35,10)+camFolha(0,0,0,12)+camFolha(0,0,35,10);
+ const hastes=[[-16,-38,-4],[-6,-50,-2],[4,-44,2],[14,-54,4],[22,-36,5]];
+ let out=tufo+hastes.map(([x,y,b])=>stemC(0,-4,x,y,b,1.3,'#8FA88F')).join('')+camFolha(-3,-18,-40,9)+camFolha(3,-24,40,9);
+ if(s===2)return out+hastes.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#B7C79A"/><circle cx="${x}" cy="${y-.6}" r="1.6" fill="#E8C766"/>`).join('');
+ return out+camFlor(-16,-38,1.2)+camFlor(-6,-50,1.4)+camFlor(4,-44,1.1)+camFlor(14,-54,1.3)+`<circle cx="22" cy="-36" r="2.6" fill="#B7C79A"/><circle cx="22" cy="-36.6" r="1.6" fill="#E8C766"/>`;
+}
+/* Oliveira */
+const OL=[[-20,-46,-70],[-14,-58,-35],[-4,-64,-5],[8,-62,25],[18,-52,60],[22,-42,85],[-24,-36,-95],[-10,-48,-50],[2,-54,10],[12,-46,45],[-16,-62,-20],[14,-60,35],[-2,-70,0],[-28,-48,-80],[26,-50,75],[-6,-40,-40],[6,-42,40],[-18,-54,-60],[20,-58,50],[0,-46,0],[-12,-68,-15],[10,-68,20],[-30,-40,-100],[30,-42,95],[-8,-58,-25],[4,-60,15]];
+function oliveira(s){
+ if(s===1)return stemC(0,0,0,-24,2,1.8,GV.barkD)+lf(0,-10,9,3,-55,GV.leafL)+lf(0,-14,9,3,55,GV.leaf)+lf(0,-19,9,3,-40,GV.leaf)+lf(0,-23,8,3,30,GV.leafL);
+ const trunk=`<path d="M-4.5,0 C-3,-10 -7,-20 -3,-34 C-1,-40 1,-40 2,-34 C5,-22 2,-10 4.5,0Z" fill="${GV.bark}"/><path d="M-1,-30 C-6,-38 -12,-42 -16,-46" stroke="${GV.bark}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M0,-32 C6,-40 12,-44 16,-48" stroke="${GV.bark}" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M0,-36 L-1,-56" stroke="${GV.bark}" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M-3,-8 q2,-3 1,-7 M2,-18 q-2,-3 0,-6" stroke="${GV.barkD}" stroke-width=".9" fill="none"/>`;
+ const n=s===2?14:OL.length;const cols=['#9FB3A4','#7C9188','#B9C8BC','#8AA095'];
+ let leaves=OL.slice(0,n).map((p,i)=>lf(p[0],p[1]+8,11,2.6,p[2],cols[i%4],false)).join('');
+ let olives='';if(s===3){[[-14,-44],[10,-48],[-4,-58],[18,-40],[-22,-38],[6,-62],[-10,-64]].forEach((o,i)=>{olives+=`<ellipse cx="${o[0]}" cy="${o[1]}" rx="2.4" ry="3" fill="${i%2?'#4A3B52':'#6E5A78'}"/>`})}
+ return trunk+leaves+olives;
+}
+/* Miosótis (não-me-esqueças) */
+function miosotisFlor(x,y,c='#8DB2CB'){let p='';for(let i=0;i<5;i++){const a=(i*72-90)*Math.PI/180;p+=`<circle cx="${(x+Math.cos(a)*2.5).toFixed(1)}" cy="${(y+Math.sin(a)*2.5).toFixed(1)}" r="2.3" fill="${c}"/>`}return p+`<circle cx="${x}" cy="${y}" r="1.2" fill="#F0CB62"/>`}
+function miosotis(s){
+ const ros=lf(0,0,16,5,-70,GV.leaf)+lf(0,0,17,5,-35,GV.leafD)+lf(0,0,15,5,0,GV.leafL)+lf(0,0,17,5,35,GV.leaf)+lf(0,0,16,5,70,GV.leafD);
+ if(s===1)return lf(0,0,12,4,-40,GV.leaf)+lf(0,0,13,4,0,GV.leafL)+lf(0,0,12,4,40,GV.leafD);
+ const stems=stemC(-2,-8,-12,-40,-4,1.6)+stemC(0,-8,2,-50,3,1.6)+stemC(2,-8,14,-36,4,1.6);
+ if(s===2)return ros+stems+[[-12,-41],[2,-51],[14,-37]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#E2A9BE"/><circle cx="${p[0]+3}" cy="${p[1]+3}" r="2.2" fill="#E9BBCB"/><circle cx="${p[0]-3}" cy="${p[1]+2}" r="2" fill="#E2A9BE"/>`).join('');
+ const cl=(x,y)=>miosotisFlor(x,y)+miosotisFlor(x+6,y+3,'#9CBDD3')+miosotisFlor(x-6,y+3,'#7FA6C1')+miosotisFlor(x+1,y+8,'#8DB2CB')+`<circle cx="${x+5}" cy="${y-5}" r="1.8" fill="#E2A9BE"/>`;
+ return ros+stems+cl(-12,-44)+cl(2,-54)+cl(14,-40);
+}
+/* Lavanda */
+function lavanda(s){
+ let tuft='';[-50,-32,-16,-4,6,18,34,52].forEach((a,i)=>{tuft+=`<path d="M0,0 Q${Math.sin(a*Math.PI/180)*8},${-8} ${Math.sin(a*Math.PI/180)*14},${-14-(i%3)*3}" stroke="${i%2?'#A3B5A6':'#8FA48F'}" stroke-width="2" fill="none" stroke-linecap="round"/>`});
+ if(s===1)return tuft;
+ const st=[[-14,-46,-4],[-6,-56,-2],[2,-60,1],[10,-54,3],[17,-44,4]];
+ let out=tuft;st.forEach(([x,y,b])=>{out+=stemC(0,-4,x,y,b,1.5,'#8FA48F');let sp='';for(let k=0;k<7;k++){const yy=y+2+k*2.6,side=k%2?2:-2;sp+=`<ellipse cx="${x+side*.9}" cy="${yy}" rx="${2.6-k*.12}" ry="3.2" fill="${s===3?(k%2?'#9A86B8':'#8371A6'):(k%2?'#9DB09B':'#8FA48F')}"/>`}out+=sp});
+ return out;
+}
+/* Ipê */
+function ipe(s){
+ if(s===1)return stemC(0,0,0,-26,-2,1.8,GV.barkD)+lf(0,-14,10,3.5,-50,GV.leafL)+lf(0,-18,10,3.5,50,GV.leaf)+lf(0,-24,9,3,-20,GV.leaf);
+ const tr=`<path d="M-4,0 C-2,-14 -4,-26 -1,-38 L2,-38 C2,-26 4,-14 4,0Z" fill="${GV.bark}"/>`+[['M-1,-34 C-8,-42 -16,-46 -24,-52',2.4],['M0,-36 C4,-46 10,-54 18,-60',2.2],['M0,-38 C-2,-48 -2,-58 0,-66',2],['M-6,-40 C-10,-50 -14,-56 -12,-62',1.4],['M8,-48 C14,-50 20,-48 26,-50',1.4]].map(([d,w])=>`<path d="${d}" stroke="${GV.bark}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`).join('');
+ const tips=[[-24,-52],[18,-60],[0,-66],[-12,-62],[26,-50],[-18,-48],[10,-54]];
+ if(s===2)return tr+tips.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.2" fill="#E4A7C0"/><circle cx="${x+3}" cy="${y+2}" r="1.6" fill="#D68FAE"/>`).join('');
+ const cl=[[-24,-54,10],[-14,-64,9],[0,-70,10],[14,-62,10],[26,-52,8],[-4,-58,8],[8,-50,7],[-18,-46,7],[20,-44,6]];const pc=['#E7AFC6','#D995B3','#C98AA6','#F0C3D4'];
+ let bl='';cl.forEach(([x,y,r],i)=>{bl+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${pc[i%4]}" opacity=".95"/>`;for(let k=0;k<4;k++){const a=(k*90+i*25)*Math.PI/180;bl+=`<circle cx="${(x+Math.cos(a)*r*.55).toFixed(1)}" cy="${(y+Math.sin(a)*r*.55).toFixed(1)}" r="${(r*.32).toFixed(1)}" fill="${pc[(i+k+1)%4]}"/>`}});
+ const fallen=[[-22,2],[-14,4],[16,3],[24,1],[6,5]].map(([x,y],i)=>`<ellipse cx="${x}" cy="${y}" rx="2.4" ry="1.3" fill="${pc[i%4]}" transform="rotate(${i*35} ${x} ${y})"/>`).join('');
+ return tr+bl+fallen;
+}
+/* Lótus */
+function lotus(s){
+ const pad=(x,y,r,c,rot)=>`<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M0,0 L${r},-1 A${r} ${r*.34} 0 1 1 ${r*.9},${r*.12}Z" fill="${c}"/><path d="M0,0 L${-r*.8},${-r*.1} M0,0 L${-r*.3},${r*.25}" stroke="#ffffff" stroke-opacity=".3" stroke-width=".8"/></g>`;
+ if(s===1)return pad(-6,0,13,'#8FAE97',10);
+ if(s===2)return pad(-14,1,13,'#8FAE97',10)+pad(14,2,11,'#7C9A86',170)+stemC(2,0,4,-30,-5,2,'#7C9A86')+`<path d="M4,-30 C-3,-38 -1,-48 4,-54 C9,-48 11,-38 4,-30Z" fill="#E7B6C6"/><path d="M4,-30 C1,-35 1,-42 4,-48" stroke="#D998AE" stroke-width="1" fill="none"/><path d="M4,-30 L-1,-34 M4,-30 L9,-34" stroke="#7C9A86" stroke-width="1.6" stroke-linecap="round"/>`;
+ const back=[-64,-32,0,32,64].map(a=>`<path d="M0,0 C-6,-10 -5,-22 0,-28 C5,-22 6,-10 0,0Z" fill="#EFC9D5" transform="rotate(${a})"/>`).join('');
+ const front=[-48,-16,16,48].map(a=>`<path d="M0,0 C-6,-8 -6,-18 0,-23 C6,-18 6,-8 0,0Z" fill="#DA9CB2" transform="rotate(${a})"/>`).join('');
+ return pad(-16,1,14,'#8FAE97',10)+pad(15,2,12,'#7C9A86',170)+`<g transform="translate(0 -6)">${back}${front}<path d="M0,0 C-4,-6 -3,-14 0,-17 C3,-14 4,-6 0,0Z" fill="#C98AA6"/><ellipse cx="0" cy="-8" rx="4.5" ry="2.6" fill="#E2C089"/></g>`;
+}
+const PLANT_FN={acolhimento:camomila,travessia:oliveira,elo:miosotis,reancoragem:lavanda,ressignificacao:ipe,reviva:girassol};
+/* stage 0 = semente + a "promessa": a silhueta bem leve do que vai florescer */
+function plantArt(id,stage){
+ const water=false;const base=water?pond():soil();
+ if(stage===0)return `<g opacity=".1">${PLANT_FN[id](3)}</g>`+base+(water?`<circle cx="0" cy="1" r="3.2" fill="#9CB9A6"/>`:`<ellipse cx="0" cy="-2" rx="4.5" ry="3.2" fill="#9C8466"/><path d="M0,-5 q1,-3 3,-4" stroke="${GV.leaf}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`);
+ const fly=stage===3?butterfly(24,-74,id==='elo'?'#E2C089':'#B9A3CF',id==='elo'?'#D9A944':'#9A86B8'):'';
+ return base+`<g class="sway">${PLANT_FN[id](stage)}</g>`+fly;
+}
+
+const POS=[{x:92,y:150},{x:268,y:150},{x:92,y:330},{x:268,y:330},{x:92,y:510},{x:268,y:510}];
+function tuft(x,y,s=1){return `<g transform="translate(${x} ${y}) scale(${s})" opacity=".9"><ellipse cx="-6" cy="-4" rx="9" ry="6" fill="#d6e2d4"/><ellipse cx="5" cy="-6" rx="10" ry="8" fill="#cbdac9"/><ellipse cx="0" cy="-1" rx="13" ry="4" fill="#dfe8dc"/></g>`}
+function gardenSVG(){
+ const bg=`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6efe6"/><stop offset=".55" stop-color="#f3ede2"/><stop offset="1" stop-color="#e9efe6"/></linearGradient></defs>
+ <rect x="4" y="0" width="352" height="600" rx="26" fill="url(#sky)"/>
+ <circle cx="300" cy="46" r="20" fill="#f3dcc0" opacity=".7"/>
+ <path d="M4,560 C80,520 150,575 220,548 S320,520 356,540 V574 a26,26 0 0 1 -26,26 H30 a26,26 0 0 1 -26,-26z" fill="#dfe8dc"/>`;
+ const path='<path d="M180,36 C120,90 240,120 180,180 S120,280 180,330 S240,440 180,510 S170,570 180,596" fill="none" stroke="#ddcfbd" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>';
+ const deco=[tuft(40,250),tuft(330,240),tuft(36,420),tuft(326,430),tuft(150,560,.9),tuft(250,570,.9),tuft(178,96,.8)].join('');
+ const beds=STATIONS.map((st,i)=>{const p=POS[i],stg=plantStage(st),n=doneCount(st),t=vis(st).length;
+  return `<g class="bed" data-station="${st.id}" transform="translate(${p.x},${p.y})" role="button" aria-label="${esc(st.nome)}: ${n} de ${t} passos"><circle r="64" cy="-28" fill="transparent"/>${plantArt(st.id,stg)}<text class="bedLabel" x="0" y="30" text-anchor="middle">${esc(st.nome)}</text><text class="bedSub" x="0" y="45" text-anchor="middle">${PLANTAS[st.id].nome} · ${n===t?'em flor':n+' de '+t}</text></g>`}).join('');
+ return `<svg class="garden" viewBox="0 0 360 600" aria-label="Seu jardim">${bg}${path}${deco}${beds}</svg>`;
+}
+function slideArt(kind){
+ const s='stroke="#2E2436" stroke-width="3.5" fill="none" stroke-linecap="round"';
+ const arts={
+  thread:`<svg viewBox="0 0 260 220" width="240"><path ${s} d="M20,170 C60,40 120,200 130,110 S200,20 180,90 S90,150 150,170 S230,130 240,60"/><circle cx="20" cy="170" r="6" fill="#C08499"/></svg>`,
+  hands:`<svg viewBox="0 0 260 220" width="240"><circle cx="130" cy="110" r="70" fill="#f3e4ea"/><path d="M105,95 a14,14 0 0 1 25,-8 a14,14 0 0 1 25,8 c0,20 -25,34 -25,34 s-25,-14 -25,-34z" fill="#C08499"/><path ${s} d="M40,170 C70,150 90,160 110,150"/><path ${s} d="M220,170 C190,150 170,160 150,150"/></svg>`,
+  sprout:`<svg viewBox="-70 -95 140 115" width="230">${plantArt('acolhimento',2)}</svg>`,
+  tools:`<svg viewBox="0 0 260 220" width="240"><rect x="60" y="50" width="100" height="130" rx="10" fill="#fff" stroke="#e9e0d6" stroke-width="2"/><path d="M78,85 h60 M78,110 h60 M78,135 h40" stroke="#7FA1AC" stroke-width="5" stroke-linecap="round"/><path d="M170,170 l50,-80" stroke="#7C9188" stroke-width="10" stroke-linecap="round"/><circle cx="200" cy="60" r="18" fill="#C79A4B" opacity=".85"/></svg>`,
+  garden:`<svg viewBox="-150 -110 300 135" width="270"><g transform="translate(-88,10)">${plantArt('reancoragem',3)}</g><g transform="translate(0,14) scale(1.15)">${plantArt('reviva',3)}</g><g transform="translate(90,10)">${plantArt('acolhimento',3)}</g></svg>`
+ };return arts[kind]||'';
+}
+const ICON={
+ jardim:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21v-8"/><path d="M12 13c-4 0-6-3-6-6 3 0 6 2 6 6z"/><path d="M12 11c0-4 2-6 6-6 0 3-2 6-6 6z"/><path d="M5 21h14"/></svg>',
+ diario:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 8h6M8 12h6"/></svg>',
+ apoio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>',
+ perfil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'
+};
+
+/* ---------- Telas ---------- */
+function render(){
+ const app=$('#app');
+ if(!state.onboarded){app.innerHTML=`<div class="view" id="view">${renderOnboarding()}</div>`;afterRender();return}
+ let body='';
+ if(route.mission)body=renderMission();
+ else if(route.station)body=renderStation();
+ else if(route.tab==='jardim')body=renderGarden();
+ else if(route.tab==='diario')body=renderDiary();
+ else if(route.tab==='apoio')body=renderApoio();
+ else if(route.tab==='perfil')body=renderPerfil();
+ const nav=route.mission?'':`<nav class="bottom">${['jardim','diario','apoio','perfil'].map(t=>`<button class="tab ${route.tab===t&&!route.station?'on':''}" data-tab="${t}">${ICON[t]}${{jardim:'Jardim',diario:'Diário',apoio:'Apoio',perfil:'Perfil'}[t]}</button>`).join('')}</nav>`;
+ app.innerHTML=`<div class="view" id="view">${body}</div>${nav}`;
+ afterRender();
+}
+function renderOnboarding(){
+ const st=state.step;
+ if(st==='slides'){const i=state.slide,s=SLIDES[i],last=i===SLIDES.length-1;
+  return `<div class="onb">${LOGO}<div class="slideArt">${slideArt(s.art)}</div><h1 style="text-align:center">${s.t}</h1><p class="body" style="text-align:center;margin:12px 0 0">${s.s}</p><div class="dots">${SLIDES.map((_,k)=>`<i class="${k===i?'on':''}"></i>`).join('')}</div>${last?'<button class="primary" data-act="slidesDone">Começar</button>':`<div class="navrow"><button class="link" data-act="slidesDone">Pular</button><button class="link" style="color:var(--ink)" data-act="nextSlide">Próximo →</button></div>`}</div>`}
+ if(st==='lead'){const l=state.lead,c=state.consents;
+  return `<div class="onb">${LOGO}<div class="progress"><i class="on"></i><i></i><i></i></div><h1 style="margin-top:28px">Vamos cuidar do seu acesso</h1><p class="body" style="margin-top:10px">Seus dados salvam sua jornada e permitem que a gente envie materiais de apoio, se você quiser.</p>
+  <div class="stack" style="margin-top:18px"><label class="field">Como quer ser chamada<input id="fName" autocomplete="given-name" value="${esc(l.name)}" placeholder="Seu nome"></label><label class="field">WhatsApp<input id="fPhone" inputmode="tel" autocomplete="tel" value="${esc(l.phone)}" placeholder="(00) 00000-0000"></label><label class="field">E-mail (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(l.email)}" placeholder="voce@email.com"></label></div>
+  <div class="card" style="margin-top:16px;padding:4px 14px">
+   <label class="consent"><input type="checkbox" id="c1" ${c.termos?'checked':''}><span>Li e aceito os <a href="/termos" target="_blank" style="color:inherit;font-weight:700">Termos de Uso</a> e a <a href="/privacidade" target="_blank" style="color:inherit;font-weight:700">Política de Privacidade</a>.</span></label>
+   <label class="consent"><input type="checkbox" id="c2" ${c.sensiveis?'checked':''}><span>Autorizo o tratamento dos meus <b>dados sensíveis de saúde emocional</b> (como registros do diário) para personalizar minha jornada, conforme a LGPD. Posso apagar tudo quando quiser.</span></label>
+   <label class="consent"><input type="checkbox" id="c3" ${c.naoTerapia?'checked':''}><span>Entendo que a Reviva <b>não substitui terapia nem atendimento médico</b>. Em crise, ligo para o <b>CVV 188</b> ou o <b>SAMU 192</b>.</span></label>
+  </div>
+  <button class="primary" id="leadNext" style="margin-top:18px" data-act="leadNext" disabled>Continuar</button></div>`}
+ if(st==='questions'){const q=QUESTIONS[state.qStep];
+  return `<div class="onb">${LOGO}<div class="progress"><i class="on"></i><i class="on"></i><i class="${state.qStep>=2?'on':''}"></i></div><p class="eyebrow" style="margin-top:28px">Pergunta ${state.qStep+1} de ${QUESTIONS.length}</p><h1 style="margin-top:6px">${q.label}</h1><div class="choices">${q.opts.map(([o,h])=>`<button class="choice ${state.answers[q.key]===o?'selected':''}" data-answer="${esc(o)}"><div>${esc(o)}${h?`<span>${esc(h)}</span>`:''}</div><b>›</b></button>`).join('')}</div><p class="small" style="margin-top:auto;padding-top:20px">Suas respostas ajudam a ajustar o tom da jornada. Dá para mudar depois.</p>${state.qStep>0?'<button class="link" data-act="qBack">← Voltar</button>':''}</div>`}
+ if(st==='ready'){
+  return `<div class="onb">${LOGO}<div class="slideArt">${slideArt('sprout')}</div><h1 style="text-align:center">${firstName()?esc(firstName())+', seu':'Seu'} jardim está pronto</h1><p class="body" style="text-align:center;margin-top:12px">${readyText()}</p><button class="primary" style="margin-top:20px" data-act="finishOnb">Entrar no meu jardim</button></div>`}
+ return '';
+}
+function readyText(){const t=state.answers.tempo||'';if(t.startsWith('Menos'))return 'Comece pelo Acolhimento. Nos primeiros dias, menos é mais: um passo pequeno já é muito.';return 'São seis estações. Você pode visitar qualquer uma, na ordem que fizer sentido — sugerimos começar pelo Acolhimento.'}
+function greeting(){const h=new Date().getHours();return h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'}
+function renderGarden(){
+ const pct=Math.round(totalProgress()*100),fn=firstName();
+ const next=nextMission();
+ const intro=recent()?'Nos primeiros dias, menos é mais. Comece pelo Acolhimento — o resto do jardim espera por você.':'Toque em um canteiro para cuidar dele. Não há ordem certa nem pressa.';
+ return `<div class="top">${LOGO}<span class="small">${pct}% do jardim</span></div>
+ <div class="welcome"><h1 style="font-size:23px">${greeting()}${fn?', '+esc(fn):''}.</h1><p class="body" style="margin-top:6px">${intro}</p></div>
+ <div class="gardenWrap">${gardenSVG()}</div>
+ ${next?`<div class="pad" style="margin:14px 0 12px"><button class="nextCard" data-station="${next.st.id}" data-mission="${next.m.id}"><span class="iconBox" style="width:38px;height:38px;border-radius:12px;background:${next.st.cor}">${ico(next.st.icon)}</span><span style="flex:1"><span class="tag">Próximo passo · ${esc(next.st.nome)}</span><br><strong style="font-size:14px">${esc(next.m.titulo)}</strong></span><span>›</span></button></div>`:''}
+ <div class="quick"><button data-go="checkin"><span class="qicon" style="background:${C.rose}">${ico('heart')}</span><b>Check-in de hoje</b><small>Como você está?</small></button><button data-go="noite"><span class="qicon" style="background:${C.plum}">${ico('moon')}</span><b>Noite difícil</b><small>Respirar e se acalmar</small></button></div>
+ <div style="height:10px"></div>`;
+}
+function nextMission(){const order=recent()?STATIONS.filter(s=>s.id==='acolhimento'||s.id==='reancoragem'):STATIONS;for(const st of order){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}if(recent()){for(const st of STATIONS){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}}return null}
+function dayCard(st){const src=DAY.audios[st.id];const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
+ return `<div class="dayCard"><div class="dayAvatar">${av}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><strong style="font-size:14px">Recado da Day</strong>${src?'':'<span class="soon">em breve</span>'}</div><div class="small">${src?'Um áudio da Day para esta estação.':'Um áudio da Day, cofundadora da Reviva, para esta estação.'}</div>${src?`<audio controls preload="none" src="${esc(src)}"></audio>`:''}</div></div>`}
+function renderStation(){
+ const st=STATIONS.find(s=>s.id===route.station);
+ return `<div class="backbar"><button class="back" data-act="backGarden" aria-label="Voltar">←</button><span class="tag">Jardim</span></div>
+ <div class="stationHero"><div class="iconBox" style="background:${st.cor}">${ico(st.icon)}</div><div><h1 style="font-size:24px">${esc(st.nome)}</h1><div class="small">${esc(st.sub)}</div></div></div>
+ <p class="body pad" style="margin:6px 0 14px">${esc(st.intro)}</p>
+ <div class="plantCard"><svg viewBox="-48 -86 96 98" width="104" height="104" aria-hidden="true">${plantArt(st.id,plantStage(st))}</svg><div><div class="tag">A planta deste canteiro</div><h2 style="margin:2px 0 4px">${PLANTAS[st.id].nome}</h2><p class="small" style="margin:0">${esc(PLANTAS[st.id].sig)}</p></div></div>
+ ${dayCard(st)}
+ <div class="stack pad" style="padding-bottom:24px">${vis(st).map(m=>`<button class="missionCard ${state.done[m.id]?'done':''}" data-mission="${m.id}"><span class="check">✓</span><span><strong style="font-size:14.5px">${esc(m.titulo)}</strong><br><span class="small">${labelTipo(m.tipo)} · ${m.dur}</span></span><span>›</span></button>`).join('')}</div>`;
+}
+function labelTipo(t){return{escrita:'Escrita',checkin:'Check-in',respiracao:'Respiração',leitura:'Leitura',checklist:'Checklist',carta:'Carta',memoria:'Memória',acao:'Ação'}[t]||t}
+function findMission(id){for(const st of STATIONS){const m=st.missoes.find(x=>x.id===id);if(m)return{st,m}}return null}
+function renderMission(){
+ const {st,m}=findMission(route.mission);const done=!!state.done[m.id];
+ let extra='';
+ if(['escrita','carta','memoria'].includes(m.tipo))extra=`<textarea id="mText" placeholder="${esc(m.placeholder||'Escreva aqui, sem pressa...')}">${esc(state.drafts[m.id]||'')}</textarea><p class="small" style="margin-top:8px">${m.tipo==='carta'?'Sua carta fica guardada em Diário → Cartas.':m.tipo==='memoria'?'Sua memória fica guardada em Diário → Memórias.':'Fica salvo só neste aparelho.'}</p>`;
+ if(m.tipo==='checkin')extra=emoPicker();
+ if(m.tipo==='checklist'){const ch=state.checks[m.id]||{};extra=`<div>${m.itens.map((it,i)=>`<label class="cl"><input type="checkbox" data-check="${m.id}:${i}" ${ch[i]?'checked':''}><span>${esc(it)}</span></label>`).join('')}</div>`}
+ if(m.tipo==='respiracao')extra=`<div class="breath"><div class="breathCircle" id="breath">Toque para começar</div></div>`;
+ const btn=m.tipo==='carta'?'Guardar carta':m.tipo==='memoria'?'Plantar memória':m.tipo==='checkin'?'Registrar check-in':done?'Concluída ✓':'Concluir passo';
+ return `<div class="backbar"><button class="back" data-act="backStation" aria-label="Voltar">←</button><span class="tag">${esc(st.nome)}</span></div>
+ <div class="missionView"><div class="eyebrow" style="color:${st.cor}">${labelTipo(m.tipo)} · ${m.dur}</div><h1 style="margin:6px 0 14px">${esc(m.titulo)}</h1><div class="content">${m.texto}</div>${extra}
+ <div style="margin-top:auto;padding-top:20px"><button class="primary" style="${done&&!['carta','memoria','checkin','escrita'].includes(m.tipo)?'background:var(--sage)':''}" data-act="complete">${btn}</button>${done?'<p class="small" style="text-align:center;margin-top:10px">Este passo já faz parte do seu jardim.</p>':''}</div></div>`;
+}
+function emoPicker(sel=[]){return `<div class="emos" id="emos">${EMOS.map(e=>`<button class="emo ${sel.includes(e)?'on':''}" data-emo="${e}">${e}</button>`).join('')}</div><textarea id="mText" style="min-height:90px" placeholder="Quer escrever algo sobre isso? (opcional)"></textarea>`}
+function renderDiary(){
+ const seg=route.seg;
+ let list='';
+ if(seg==='diario'){
+  list=`<div class="card" style="margin:0 22px 12px"><h2>Como foi hoje?</h2>${emoPicker()}<button class="primary" style="margin-top:10px" data-act="addDiary">Registrar</button></div>`;
+  list+=state.diary.length?`<div class="stack pad">${state.diary.map(e=>`<div class="card entry"><div class="meta">${esc(e.data)}${(e.emos||[]).map(x=>`<span class="pillEmo">${esc(x)}</span>`).join('')}</div>${e.texto?`<div class="txt">${esc(e.texto)}</div>`:''}</div>`).join('')}</div>`:'<div class="empty">Seus registros aparecem aqui.</div>';
+ }
+ if(seg==='cartas')list=state.letters.length?`<div class="stack pad">${state.letters.map(e=>`<div class="card entry"><div class="meta">${esc(e.data)} · ${esc(e.titulo)}</div><div class="txt">${esc(e.texto)}</div></div>`).join('')}</div>`:`<div class="empty">Nenhuma carta ainda.<br><button class="link" style="color:var(--rose2)" data-station="elo" data-mission="e1">Escrever minha primeira carta →</button></div>`;
+ if(seg==='memorias')list=state.memories.length?`<div class="stack pad">${state.memories.map(e=>`<div class="card entry"><div class="meta">${esc(e.data)}</div><div class="txt">${esc(e.texto)}</div></div>`).join('')}</div>`:`<div class="empty">Seu jardim de memórias começa aqui.<br><button class="link" style="color:var(--rose2)" data-station="elo" data-mission="e2">Plantar uma memória →</button></div>`;
+ return `<div class="top"><div class="title">Diário</div></div><div class="seg">${[['diario','Diário'],['cartas','Cartas'],['memorias','Memórias']].map(([k,l])=>`<button class="${seg===k?'on':''}" data-seg="${k}">${l}</button>`).join('')}</div>${list}<div style="height:20px"></div>`;
+}
+function renderApoio(){
+ return `<div class="top"><div class="title">Apoio</div></div>
+ <div class="sos"><h2>Precisa de ajuda agora?</h2><p>Se a dor estiver insuportável ou surgirem pensamentos de não querer viver, fale com alguém agora. É gratuito e funciona 24 horas.</p><div class="sosBtns"><a href="tel:188">Ligar CVV 188</a><a class="ghost" href="https://cvv.org.br/chat/" target="_blank" rel="noopener">Chat do CVV</a></div><p style="margin:10px 0 0;font-size:12px">Emergência médica: <a href="tel:192" style="color:#fff;font-weight:800">SAMU 192</a></p></div>
+ <div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-go="noite"><span class="qicon" style="background:${C.sage}">${ico('moon')}</span><span style="flex:1"><strong>Ansiedade ou solidão à noite</strong><br><span class="small">Respiração guiada e 5-4-3-2-1</span></span><span>›</span></div>
+ <div class="pad"><p class="tag" style="margin-bottom:10px">Rede de apoio</p></div>
+ <div class="stack pad" style="padding-bottom:24px">${APOIO.map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
+}
+function renderPerfil(){
+ const pct=Math.round(totalProgress()*100),r=54,c=2*Math.PI*r;
+ const a=state.answers;
+ return `<div class="top"><div class="title">Seu perfil</div></div>
+ <div class="profileRing"><svg width="150" height="150" viewBox="0 0 140 140"><circle cx="70" cy="70" r="${r}" fill="none" stroke="#E9E0D6" stroke-width="10"/><circle cx="70" cy="70" r="${r}" fill="none" stroke="${C.sage}" stroke-width="10" stroke-linecap="round" transform="rotate(-90 70 70)" stroke-dasharray="${c}" stroke-dashoffset="${c-c*pct/100}"/><text x="70" y="68" text-anchor="middle" font-family="Fraunces, Georgia" font-size="26" fill="#2E2436">${pct}%</text><text x="70" y="88" text-anchor="middle" font-size="11" fill="#5C5266">do jardim</text></svg></div>
+ <div class="stack pad">
+  <div class="card"><h3>${esc(state.lead.name||'Você')}</h3><p class="small" style="margin:4px 0 0">${esc(a.situacao||'')}${a.tempo?' · '+esc(a.tempo):''}</p></div>
+  <div class="card"><h3 style="margin-bottom:10px">Canteiros</h3>${STATIONS.map(s=>{const p=Math.round(stationProgress(s)*100);return `<div style="display:flex;align-items:center;gap:10px;margin:8px 0"><span style="width:110px;font-size:13px;font-weight:700">${esc(s.nome)}</span><span style="flex:1;height:6px;background:var(--border);border-radius:6px;overflow:hidden"><i style="display:block;height:100%;width:${p}%;background:${s.cor}"></i></span></div>`}).join('')}</div>
+  <div class="card"><h3>Seus dados</h3><p class="small" style="margin:6px 0 12px">Seus registros ficam salvos neste aparelho. Você pode apagar tudo a qualquer momento.</p><div class="row2"><button class="secondary" data-act="refazer">Refazer perguntas</button><button class="secondary" style="color:var(--danger)" data-act="apagar">Apagar meus dados</button></div></div>
+  <div class="card"><h3>Ajuda e informações</h3><p class="small" style="margin:8px 0 0;line-height:2"><a href="/suporte" style="color:var(--rose2)">Suporte e perguntas frequentes</a><br><a href="/privacidade" style="color:var(--rose2)">Política de Privacidade</a><br><a href="/termos" style="color:var(--rose2)">Termos de Uso</a></p></div>
+  <p class="small" style="text-align:center;margin:8px 0 26px">Reviva não substitui terapia ou atendimento médico.<br>Em crise: CVV 188 · SAMU 192</p>
+ </div>`;
+}
+
+/* ---------- Comportamento ---------- */
+function afterRender(){
+ if(!state.onboarded&&state.step==='lead'){
+  const upd=()=>{state.lead={name:$('#fName').value.trim(),phone:$('#fPhone').value.trim(),email:$('#fEmail').value.trim()};state.consents={termos:$('#c1').checked,sensiveis:$('#c2').checked,naoTerapia:$('#c3').checked};const ok=state.lead.name&&state.lead.phone.replace(/\D/g,'').length>=10&&state.consents.termos&&state.consents.sensiveis&&state.consents.naoTerapia;$('#leadNext').disabled=!ok};
+  ['#fName','#fPhone','#fEmail','#c1','#c2','#c3'].forEach(s=>{$(s).addEventListener('input',upd);$(s).addEventListener('change',upd)});
+  const ph=$('#fPhone');ph.addEventListener('input',()=>{let d=ph.value.replace(/\D/g,'').slice(0,11);ph.value=d.length>6?`(${d.slice(0,2)}) ${d.slice(2,d.length-4)}-${d.slice(-4)}`:d.length>2?`(${d.slice(0,2)}) ${d.slice(2)}`:d});
+  upd();
+ }
+ const ta=$('#mText');if(ta&&route.mission){const m=findMission(route.mission).m;if(['escrita','carta','memoria'].includes(m.tipo))ta.addEventListener('input',()=>{state.drafts[m.id]=ta.value;save()})}
+ const v=$('#view');if(v&&render._scrollTop){v.scrollTop=0;render._scrollTop=false}
+}
+function go(patch){Object.assign(route,patch);render._scrollTop=true;render()}
+let breathTimer=null;
+function startBreath(){const b=$('#breath');if(!b)return;clearInterval(breathTimer);let inhale=true,cycles=0;const step=()=>{const el=$('#breath');if(!el){clearInterval(breathTimer);return}el.classList.toggle('in',inhale);el.textContent=inhale?'Inspire…':'Solte o ar…';if(!inhale)cycles++;inhale=!inhale;if(cycles>=6){clearInterval(breathTimer);setTimeout(()=>{const e2=$('#breath');if(e2){e2.classList.remove('in');e2.textContent='Muito bem. Toque para repetir.'}},4000)}};step();breathTimer=setInterval(step,4000)}
+
+document.addEventListener('click',e=>{
+ const t=e.target;
+ const act=t.closest('[data-act]')?.dataset.act;
+ if(act==='nextSlide'){state.slide=Math.min(state.slide+1,SLIDES.length-1);save();render();return}
+ if(act==='slidesDone'){track('apresentacao_concluida');state.step='lead';save();render();return}
+ if(act==='leadNext'){saveLead();state.step='questions';state.qStep=0;save();render();return}
+ if(act==='qBack'){state.qStep=Math.max(0,state.qStep-1);render();return}
+ if(act==='finishOnb'){state.onboarded=true;save();send({tipo:'perfil',evento:'onboarding_concluido',answers:state.answers});go({tab:'jardim',station:null,mission:null});return}
+ const ans=t.closest('[data-answer]');
+ if(ans){const q=QUESTIONS[state.qStep];state.answers[q.key]=ans.dataset.answer;if(state.qStep<QUESTIONS.length-1)state.qStep++;else state.step=state.onboarded?'done':'ready';save();if(state.step==='done'){state.step='ready';state.onboarded=true;save();toast('Respostas atualizadas');go({tab:'perfil'});return}render();return}
+ const tab=t.closest('[data-tab]');if(tab){track('aba',tab.dataset.tab);go({tab:tab.dataset.tab,station:null,mission:null});return}
+ const seg=t.closest('[data-seg]');if(seg){route.seg=seg.dataset.seg;render();return}
+ const emo=t.closest('[data-emo]');if(emo){emo.classList.toggle('on');return}
+ const goq=t.closest('[data-go]');if(goq){if(goq.dataset.go==='checkin')go({station:'acolhimento',mission:'a2'});else go({station:'reancoragem',mission:'r2'});return}
+ const mis=t.closest('[data-mission]');if(mis){go({station:mis.dataset.station||route.station,mission:mis.dataset.mission});return}
+ const st=t.closest('[data-station]');if(st){go({station:st.dataset.station,mission:null});return}
+ if(act==='backGarden'){go({station:null,mission:null});return}
+ if(act==='backStation'){clearInterval(breathTimer);go({mission:null});return}
+ if(t.id==='breath'){startBreath();return}
+ if(act==='complete'){completeMission();return}
+ if(act==='addDiary'){const emos=[...document.querySelectorAll('#emos .emo.on')].map(x=>x.dataset.emo);const txt=($('#mText')?.value||'').trim();if(!emos.length&&!txt){toast('Marque uma emoção ou escreva algo');return}state.diary.unshift({data:today(),emos,texto:txt});save();track('diario');toast('Registrado no seu diário');render();return}
+ if(act==='apagar'){if(confirm('Apagar todos os seus dados e registros deste aparelho? Isso não pode ser desfeito.')){track('dados_apagados');try{localStorage.removeItem(STORE)}catch(_){}state=blank();route={tab:'jardim',station:null,mission:null,seg:'diario'};render()}return}
+ if(act==='refazer'){state.qStep=0;state.step='questions';state.onboarded=false;save();render();return}
+});
+document.addEventListener('change',e=>{const c=e.target.closest('[data-check]');if(c){const [id,i]=c.dataset.check.split(':');state.checks[id]=state.checks[id]||{};state.checks[id][i]=c.checked;save()}});
+
+function completeMission(){
+ const {st,m}=findMission(route.mission);const txt=($('#mText')?.value||'').trim();
+ if(m.tipo==='carta'||m.tipo==='memoria'||m.tipo==='escrita'){
+  if(!txt){toast('Escreva algumas palavras antes');return}
+  if(m.tipo==='carta')state.letters.unshift({data:today(),titulo:m.titulo,texto:txt});
+  if(m.tipo==='memoria')state.memories.unshift({data:today(),texto:txt});
+  if(m.tipo==='escrita')state.diary.unshift({data:today(),emos:[],texto:m.titulo+'\n\n'+txt});
+  delete state.drafts[m.id];
+ }
+ if(m.tipo==='checkin'){const emos=[...document.querySelectorAll('#emos .emo.on')].map(x=>x.dataset.emo);if(!emos.length&&!txt){toast('Marque pelo menos uma emoção');return}state.diary.unshift({data:today(),emos,texto:txt})}
+ if(state.done[m.id]&&!['carta','memoria','checkin','escrita'].includes(m.tipo)){go({mission:null});return}
+ const before=stageOf(stationProgress(st));
+ state.done[m.id]=Date.now();save();
+ const after=stageOf(stationProgress(st));track(m.tipo==='checkin'?'checkin':'passo_concluido',m.id);if(after===3&&before<3)track('canteiro_floresceu',st.id);
+ toast(after===3&&before<3?'O canteiro '+st.nome+' está em flor. Uma borboleta veio visitar.':after>before?'Algo cresceu no seu jardim':'Guardado com carinho');
+ go({mission:null});
+}
+render();track('app_aberto');
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
