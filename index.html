@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script src="/native.js"></script>
 <script src="/plantas.js"></script>
+<script src="/trilhas.js"></script>
 <script src="/conteudo.js"></script>
 <script src="/livro.js"></script>
 <link rel="manifest" href="/manifest.json">
@@ -166,7 +167,7 @@ button.card{font:inherit;color:inherit;display:block;width:100%;text-align:left}
 :root{--shadow:0 1px 2px rgba(46,36,54,.04),0 8px 24px -12px rgba(46,36,54,.18);--shadow2:0 2px 4px rgba(46,36,54,.05),0 14px 34px -14px rgba(46,36,54,.26);--r:18px}
 .phone{background:radial-gradient(120% 60% at 50% -10%,#fff8ee 0%,var(--bg) 55%)}
 .card,.nextCard,.quick button,.choice,.dayCard{border:1px solid rgba(233,224,214,.7);border-radius:var(--r);box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease}
-button.card:active,.nextCard:active,.quick button:active,.choice:active,[data-page]:active,.bed:active{transform:scale(.985)}
+button.card:active,.nextCard:active,.quick button:active,.choice:active,[data-page]:active{transform:scale(.985)}
 .primary{background:linear-gradient(135deg,#d4a858 0%,var(--gold) 55%,#b8893c 100%);box-shadow:0 8px 20px -8px rgba(199,154,75,.55);letter-spacing:.01em;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .primary:active:not(:disabled){transform:scale(.98);filter:brightness(.97)}
 .secondary{box-shadow:var(--shadow);transition:transform .15s ease}
@@ -189,8 +190,8 @@ h1{letter-spacing:-.012em}
 .qicon,.apoioIcon,.iconBox{box-shadow:inset 0 -2px 4px rgba(0,0,0,.08),0 4px 10px -4px rgba(46,36,54,.3)}
 .view{animation:viewIn .32s cubic-bezier(.2,.7,.2,1)}
 @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.garden .bed{transition:transform .25s ease}
-.garden .bed:hover{cursor:pointer}
+.garden .bed{cursor:pointer}
+.garden .bed:active .sway{opacity:.75}
 .gardenWrap{filter:drop-shadow(0 10px 24px rgba(46,36,54,.08))}
 .bedLabel{font-weight:800}
 /* Tela do vídeo de boas-vindas */
@@ -225,14 +226,14 @@ const CONFIG={SHEETS_URL:'https://script.google.com/macros/s/AKfycbzMUGqfkltx6Kc
 /* ---------- Conteúdo: 6 estações do método ---------- */
 const STATIONS=[
 {id:'acolhimento',nome:'Acolhimento',sub:'Chegar com calma',cor:C.rose,icon:'sun',
- intro:'Aqui não existe jeito certo de sentir. A primeira estação é só para você chegar, respirar e ser ouvida.',
+ intro:'Aqui não existe jeito certo de sentir. A primeira estação é só para você chegar, respirar e ser [[ouvida|ouvido|escutada ou escutado]].',
  missoes:[
   {id:'a1',tipo:'escrita',titulo:'Conte sua história, do seu jeito',dur:'10 min',
    texto:'<p>Não existe forma certa de começar. Escreva como chegou até aqui: o que aconteceu, quanto tempo faz, o que mudou e o que pesa mais agora.</p><p>Ninguém vai ler isso além de você.</p>',placeholder:'Eu cheguei até aqui porque...'},
   {id:'a2',tipo:'checkin',titulo:'Como você está chegando hoje?',dur:'2 min',
    texto:'<p>Marque o que você sente agora, sem julgamento. Pode ser mais de uma coisa — no luto, quase sempre é.</p>'},
   {id:'a3',tipo:'respiracao',titulo:'Primeiros socorros: respirar junto',dur:'3 min',
-   texto:'<p>Quando a dor aperta, o corpo entra em alerta. Respirar devagar avisa ao corpo que, neste minuto, você está segura.</p><p>Inspire acompanhando o círculo crescer e solte o ar quando ele diminuir.</p>'},
+   texto:'<p>Quando a dor aperta, o corpo entra em alerta. Respirar devagar avisa ao corpo que, neste minuto, você está [[segura|seguro|em segurança]].</p><p>Inspire acompanhando o círculo crescer e solte o ar quando ele diminuir.</p>'},
   {id:'a4',tipo:'leitura',titulo:'O que é normal sentir no começo',dur:'4 min',
    texto:'<p>Nas primeiras semanas e meses é comum sentir <strong>cansaço extremo, esquecimento, irritação, culpa, alívio, raiva e saudade</strong> — às vezes tudo no mesmo dia.</p><p>O luto não segue fases em ordem nem tem prazo. Ele vem em ondas: dias mais leves e dias em que tudo volta.</p><p>Procure ajuda profissional se, por várias semanas, você não conseguir comer, dormir ou cuidar do básico, ou se surgirem pensamentos de não querer viver. Nesses momentos, ligue para o <strong>CVV no 188</strong> (24h, gratuito).</p>'}
  ]},
@@ -240,7 +241,7 @@ const STATIONS=[
  intro:'Documentos, direitos e dinheiro. Uma coisa de cada vez — e você não precisa resolver tudo hoje.',
  missoes:[
   {id:'t1',tipo:'checklist',titulo:'Documentos essenciais: o que reunir',dur:'15 min',
-   texto:'<p>Uma lista para você não precisar lembrar de tudo sozinha. Marque o que já tem em mãos.</p>',
+   texto:'<p>Uma lista para você não precisar lembrar de tudo [[sozinha|sozinho|por conta própria]]. Marque o que já tem em mãos.</p>',
    itens:['Certidão de óbito','RG e CPF da pessoa que faleceu','Certidão de casamento ou comprovante de união estável','Certidões de nascimento dos filhos','Documentos de imóveis e veículos','Extratos e contas bancárias','Apólices de seguro de vida','Comprovante de residência']},
   {id:'t2',tipo:'leitura',titulo:'Pensão por morte, sem juridiquês',dur:'5 min',
    texto:'<p>A pensão por morte do INSS é paga aos dependentes de quem contribuía ou era aposentado — como cônjuge ou companheira e filhos menores de 21 anos.</p><p><strong>Atenção ao prazo:</strong> pedindo em até 90 dias após o óbito, o benefício costuma ser pago desde a data da morte. Depois disso, conta a partir da data do pedido.</p><p>O pedido é feito pelo app ou site <strong>Meu INSS</strong> ou pelo telefone <strong>135</strong>. Na dúvida, procure um advogado previdenciário ou a Defensoria Pública.</p>'},
@@ -265,7 +266,7 @@ const STATIONS=[
   {id:'e2',tipo:'memoria',titulo:'Plante uma memória',dur:'5 min',
    texto:'<p>Um momento, um cheiro, uma frase, uma mania. Guarde uma lembrança boa — elas vão formando o seu jardim de memórias.</p>',placeholder:'Eu lembro de quando...'},
   {id:'e3',tipo:'escrita',titulo:'Datas que importam',dur:'5 min',
-   texto:'<p>Aniversários, datas especiais e o dia da partida costumam ser difíceis. Anote as datas que você quer atravessar com mais cuidado — e pense em um pequeno ritual para cada uma.</p>',placeholder:'Ex.: 12/03 — aniversário dele. Quero passar o dia com minha irmã.'}
+   texto:'<p>Aniversários, datas especiais e o dia da partida costumam ser difíceis. Anote as datas que você quer atravessar com mais cuidado — e pense em um pequeno ritual para cada uma.</p>',placeholder:'Ex.: 12/03, aniversário de quem partiu. Quero passar o dia com alguém querido.'}
  ]},
 {id:'reancoragem',nome:'Reancoragem',sub:'Chão debaixo dos pés',cor:C.sage,icon:'anchor',
  intro:'Rotina, corpo e sono. Pequenas âncoras para os dias voltarem a ter algum contorno.',
@@ -298,7 +299,7 @@ const STATIONS=[
   {id:'v2',tipo:'acao',titulo:'Reative uma conexão importante',dur:'5 min',
    texto:'<p>Uma mensagem, uma ligação, um convite. Não precisa ser grande; precisa ser real. Quando fizer, marque como concluída.</p>'},
   {id:'v3',tipo:'carta',titulo:'Carta para quem está chegando',dur:'10 min',
-   texto:'<p>Pense em uma mulher que está vivendo hoje o começo que você já viveu. O que você diria a ela?</p><p>Esse é o espírito Reviva: quem já atravessou, acolhe quem está chegando.</p>',placeholder:'Para você, que está chegando...'}
+   texto:'<p>Pense em alguém que está vivendo hoje o começo que você já viveu. O que você diria?</p><p>Esse é o espírito Reviva: quem já atravessou, acolhe quem está chegando.</p>',placeholder:'Para você, que está chegando...'}
  ]}
 ];
 /* Recado da Day: coloque os arquivos de áudio na pasta /audio e preencha os caminhos abaixo
@@ -324,24 +325,25 @@ const IC={
 const ico=(k,stroke='#fff')=>`<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]||''}</svg>`;
 const EMOS=['Saudade','Tristeza','Cansaço','Raiva','Culpa','Medo','Solidão','Ansiedade','Alívio','Gratidão','Paz','Esperança'];
 const SLIDES=[
- {t:'A perda muda tudo.',s:'E você não precisa atravessar isso sozinha.',art:'thread'},
+ {t:'A perda muda tudo.',s:'E você não precisa atravessar isso [[sozinha|sozinho|só]].',art:'thread'},
  {t:'Feita por quem viveu isso',s:'A Reviva nasceu da história da Day Martins, que perdeu o marido e decidiu transformar a própria travessia em cuidado.',art:'hands'},
  {t:'Um jardim que cresce no seu tempo',s:'Seis estações, sem prazos, sem pontos, sem comparação. Cada passo faz algo florescer.',art:'sprout'},
  {t:'Do prático ao emocional',s:'Documentos e direitos, cartas e memórias, e apoio para as noites difíceis.',art:'tools'},
  {t:'Estamos aqui com você',s:'No seu ritmo, do seu jeito.',art:'garden'}
 ];
 const QUESTIONS=[
- {key:'situacao',label:'O que te trouxe até aqui?',opts:[['Perdi meu companheiro','Viuvez, direitos, rotina e saudade.'],['Perdi outra pessoa querida','Mãe, pai, filho, irmã, amiga...']]},
- {key:'tempo',label:'Há quanto tempo aconteceu?',opts:[['Menos de 1 mês','Vamos começar bem devagar.'],['Entre 1 mês e 1 ano','Ajuda a ajustar o ritmo da jornada.'],['Mais de 1 ano','O luto não tem prazo.']]},
+ {key:'situacao',label:'O que te trouxe até aqui?',opts:[['Perdi meu companheiro ou companheira','Viuvez, direitos, rotina e saudade.'],['Perdi outra pessoa querida','Mãe, pai, filho, irmã, amigo...'],['Estou vivendo uma separação','Divórcio ou fim de relacionamento: dor, rotina e recomeço.']]},
+ {key:'genero',label:'Como você prefere que a gente fale com você?',opts:[['No feminino','Ex.: "você não está sozinha"'],['No masculino','Ex.: "você não está sozinho"'],['De um jeito neutro','Ex.: "você não está só"']]},
+ {key:'tempo',label:'Há quanto tempo aconteceu?',opts:[['Menos de 1 mês','Vamos começar bem devagar.'],['Entre 1 mês e 1 ano','Ajuda a ajustar o ritmo da jornada.'],['Mais de 1 ano','Cada história tem o seu tempo.']]},
  {key:'filhos',label:'Você tem filhos?',opts:[['Sim',''],['Não',''],['Prefiro não responder','']]}
 ];
 const APOIO=[
  ['check','Gratuito','Checklist de documentos','Lista para organizar certidões, contratos e comprovantes.',C.sky,'free','travessia'],
  ['heart','Gratuito','Primeiros dias de luto','Material de acolhimento com linguagem simples e cuidadosa.',C.rose,'free','acolhimento'],
  ['moon','Gratuito','Para noites difíceis','Respiração guiada e o exercício 5-4-3-2-1 para ansiedade e solidão.',C.sage,'free','reancoragem'],
- ['scale','Plano Reviva','Orientação jurídica','Advogadas parceiras para inventário, pensão e direitos.',C.sky,'premium'],
- ['chat','Plano Reviva','Psicólogas do luto','Atendimento com profissionais especializadas em luto.',C.rose2,'premium'],
- ['people','Plano Reviva','Rodas por estação','Encontros online moderados com mulheres na mesma fase.',C.terra,'premium'],
+ ['scale','Plano Reviva','Orientação jurídica','Profissionais parceiros para inventário, pensão e direitos.',C.sky,'premium'],
+ ['chat','Plano Reviva','Psicólogas do luto','Atendimento com profissionais especializados em luto.',C.rose2,'premium'],
+ ['people','Plano Reviva','Rodas por estação','Encontros online moderados com pessoas na mesma fase.',C.terra,'premium'],
  ['coin','Plano Reviva','Organização financeira','Orçamento, dívidas e benefícios em transição de vida.',C.sage,'premium']
 ];
 
@@ -362,7 +364,8 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const firstName=()=>((state.lead.name||'').trim().split(/\s+/)[0]||'');
 const today=()=>new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).replace('.','');
 /* Conteúdo diário, relatos e livro */
-const RVC=window.RV_CONTEUDO||{sementes:[],perguntas:[]},LIVRO=window.RV_LIVRO||{};
+const RVC0=window.RV_CONTEUDO||{sementes:[],perguntas:[]},LIVRO=window.RV_LIVRO||{};
+let RVC=RVC0;function applyContent(){const T=TRILHAS[trk()];RVC=(T&&T.sementes&&T.sementes.length)?{sementes:T.sementes,perguntas:T.perguntas||RVC0.perguntas}:RVC0}
 const dkey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 function dayIdx(n){if(!n)return 0;const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%n}
 const livroOn=()=>!!LIVRO.ativo;
@@ -375,7 +378,7 @@ function renderRelatos(){
  const list=RELATOS.length?`<div class="stack pad">${RELATOS.map(r=>`<div class="card"><p class="relatoT" style="margin:0">“${esc(r.texto)}”</p><div class="small" style="margin-top:8px">${relatoAss(r)}</div></div>`).join('')}</div>`:`<div class="empty">Os primeiros relatos estão sendo lidos com carinho.<br>Que tal ser uma das primeiras a compartilhar?</div>`;
  const env=state.relatoEnviado||0;
  return `<div class="backbar"><button class="back" data-act="backPage" aria-label="Voltar">←</button><span class="tag">Apoio</span></div>
- <div class="welcome"><h1 style="font-size:23px">Relatos</h1><p class="body" style="margin-top:6px">Histórias reais de quem está atravessando o luto. Cada relato é lido pela equipe ReViva antes de aparecer aqui.</p></div>
+ <div class="welcome"><h1 style="font-size:23px">Relatos</h1><p class="body" style="margin-top:6px">Histórias reais de quem está atravessando o luto ou uma separação. Cada relato é lido pela equipe ReViva antes de aparecer aqui.</p></div>
  ${list}
  <div class="card" style="margin:16px 22px 26px"><h2 style="color:var(--ink)">Compartilhe a sua história</h2><p class="small" style="margin:6px 0 10px">Um elogio, um passo que você conseguiu dar, uma palavra para quem está começando. Não coloque nomes completos, telefones ou endereços.</p>
  <textarea id="rText" maxlength="1200" placeholder="Escreva aqui, do seu jeito..."></textarea>
@@ -395,6 +398,15 @@ function renderLivro(){
  ${lk.fisico?`<a class="primary" style="display:block;margin-top:12px;text-decoration:none" href="${esc(lk.fisico)}" target="_blank" rel="noopener" data-track="livro_fisico">Comprar o livro físico</a>`:''}
  ${dig?`<a class="secondary" style="display:block;margin-top:10px;text-decoration:none;color:var(--ink)" href="${esc(lk.digital)}" target="_blank" rel="noopener" data-track="livro_digital">Comprar o e-book</a>`:''}</div></div><div style="height:26px"></div>`;
 }
+/* Linguagem: [[feminino|masculino|neutro]] escolhido no cadastro */
+function gen(){const g=(state.answers||{}).genero||'';return g.startsWith('No fem')?0:g.startsWith('No masc')?1:2}
+function gx(h){const i=gen();return h.replace(/\[\[([^\]|]*)\|([^\]|]*)\|([^\]]*)\]\]/g,(_,a,b,c)=>[a,b,c][i])}
+/* Trilha: luto (padrão) ou separação */
+const TRILHAS=window.RV_TRILHAS||{};
+function trk(){return ((state.answers||{}).situacao||'').startsWith('Estou vivendo')?'separacao':'luto'}
+const BASE_STATIONS=JSON.parse(JSON.stringify(STATIONS.map(st=>Object.assign({},st,{missoes:st.missoes.map(m=>Object.assign({},m,{cond:undefined}))}))));
+const CONDS={};STATIONS.forEach(st=>st.missoes.forEach(m=>{if(m.cond)CONDS[m.id]=m.cond}));
+function applyTrack(){const T=TRILHAS[trk()];STATIONS.length=0;BASE_STATIONS.forEach(b=>{const st=Object.assign({},b);if(T&&T.estacoes&&T.estacoes[st.id])Object.assign(st,T.estacoes[st.id]);st.cor=C[{acolhimento:'rose',travessia:'sky',elo:'rose2',reancoragem:'sage',ressignificacao:'terra',reviva:'plum'}[st.id]];st.missoes=b.missoes.map(m=>{const mm=Object.assign({},m);if(T&&T.missoes&&T.missoes[m.id])Object.assign(mm,T.missoes[m.id]);if(CONDS[m.id])mm.cond=CONDS[m.id];return mm});STATIONS.push(st)})}
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2200)}
 function vis(st){return st.missoes.filter(m=>!m.cond||m.cond(state.answers))}
 function doneCount(st){return vis(st).filter(m=>state.done[m.id]).length}
@@ -524,7 +536,7 @@ function gardenSVG(){
  const path='<path d="M180,36 C120,90 240,120 180,180 S120,280 180,330 S240,440 180,510 S170,570 180,596" fill="none" stroke="#ddcfbd" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>';
  const deco=[tuft(40,250),tuft(330,240),tuft(36,420),tuft(326,430),tuft(150,560,.9),tuft(250,570,.9),tuft(178,96,.8)].join('');
  const beds=STATIONS.map((st,i)=>{const p=POS[i],stg=plantStage(st),n=doneCount(st),t=vis(st).length;
-  return `<g class="bed" data-station="${st.id}" transform="translate(${p.x},${p.y})" role="button" aria-label="${esc(st.nome)}: ${n} de ${t} passos"><circle r="64" cy="-28" fill="transparent"/>${plantArt(st.id,stg)}<text class="bedLabel" x="0" y="30" text-anchor="middle">${esc(st.nome)}</text><text class="bedSub" x="0" y="45" text-anchor="middle">${PLANTAS[st.id].nome} · ${n===t?'em flor':n+' de '+t}</text></g>`}).join('');
+  return `<g class="bed" data-station="${st.id}" transform="translate(${p.x},${p.y})" role="button" aria-label="${esc(st.nome)}: ${n} de ${t} passos"><circle r="72" cy="-30" fill="#fff" fill-opacity="0.001"/>${plantArt(st.id,stg)}<text class="bedLabel" x="0" y="30" text-anchor="middle">${esc(st.nome)}</text><text class="bedSub" x="0" y="45" text-anchor="middle">${PLANTAS[st.id].nome} · ${n===t?'em flor':n+' de '+t}</text></g>`}).join('');
  if(A){const deco2=[A.tuft(40,250),A.tuft(330,240),A.tuft(36,420),A.tuft(326,430),A.tuft(150,560,.9),A.tuft(250,570,.9),A.tuft(178,96,.8)].join('');return `<svg class="garden" viewBox="0 0 360 600" aria-label="Seu jardim">${A.defs()}${A.scene()}${deco2}${beds}</svg>`}
  return `<svg class="garden" viewBox="0 0 360 600" aria-label="Seu jardim">${bg}${path}${deco}${beds}</svg>`;
 }
@@ -548,7 +560,7 @@ const ICON={
 /* ---------- Telas ---------- */
 function render(){
  const app=$('#app');
- if(!state.onboarded){app.innerHTML=`<div class="view" id="view">${renderOnboarding()}</div>`;afterRender();return}
+ if(!state.onboarded){app.innerHTML=gx(`<div class="view" id="view">${renderOnboarding()}</div>`);afterRender();return}
  let body='';
  if(route.page==='relatos')body=renderRelatos();
  else if(route.page==='livro'&&livroOn())body=renderLivro();
@@ -559,7 +571,7 @@ function render(){
  else if(route.tab==='apoio')body=renderApoio();
  else if(route.tab==='perfil')body=renderPerfil();
  const nav=route.mission?'':`<nav class="bottom">${['jardim','diario','apoio','perfil'].map(t=>`<button class="tab ${route.tab===t&&!route.station?'on':''}" data-tab="${t}">${ICON[t]}${{jardim:'Jardim',diario:'Diário',apoio:'Apoio',perfil:'Perfil'}[t]}</button>`).join('')}</nav>`;
- app.innerHTML=`<div class="view" id="view">${body}</div>${nav}`;
+ app.innerHTML=gx(`<div class="view" id="view">${body}</div>${nav}`);
  afterRender();
 }
 function renderOnboarding(){
@@ -570,7 +582,7 @@ function renderOnboarding(){
   return `<div class="onb">${LOGO}<div class="slideArt">${slideArt(s.art)}</div><h1 style="text-align:center">${s.t}</h1><p class="body" style="text-align:center;margin:12px 0 0">${s.s}</p><div class="dots">${SLIDES.map((_,k)=>`<i class="${k===i?'on':''}"></i>`).join('')}</div>${last?'<button class="primary" data-act="slidesDone">Começar</button>':`<div class="navrow"><button class="link" data-act="slidesDone">Pular</button><button class="link" style="color:var(--ink)" data-act="nextSlide">Próximo →</button></div>`}</div>`}
  if(st==='lead'){const l=state.lead,c=state.consents;
   return `<div class="onb">${LOGO}<div class="progress"><i class="on"></i><i></i><i></i></div><h1 style="margin-top:28px">Vamos cuidar do seu acesso</h1><p class="body" style="margin-top:10px">Seus dados salvam sua jornada e permitem que a gente envie materiais de apoio, se você quiser.</p>
-  <div class="stack" style="margin-top:18px"><label class="field">Como quer ser chamada<input id="fName" autocomplete="given-name" value="${esc(l.name)}" placeholder="Seu nome"></label><label class="field">WhatsApp<input id="fPhone" inputmode="tel" autocomplete="tel" value="${esc(l.phone)}" placeholder="(00) 00000-0000"></label><label class="field">E-mail (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(l.email)}" placeholder="voce@email.com"></label></div>
+  <div class="stack" style="margin-top:18px"><label class="field">Como quer ser [[chamada|chamado|chamada ou chamado]]<input id="fName" autocomplete="given-name" value="${esc(l.name)}" placeholder="Seu nome"></label><label class="field">WhatsApp<input id="fPhone" inputmode="tel" autocomplete="tel" value="${esc(l.phone)}" placeholder="(00) 00000-0000"></label><label class="field">E-mail (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(l.email)}" placeholder="voce@email.com"></label></div>
   <div class="card" style="margin-top:16px;padding:4px 14px">
    <label class="consent"><input type="checkbox" id="c1" ${c.termos?'checked':''}><span>Li e aceito os <a href="/termos.html" target="_blank" style="color:inherit;font-weight:700">Termos de Uso</a> e a <a href="/privacidade.html" target="_blank" style="color:inherit;font-weight:700">Política de Privacidade</a>.</span></label>
    <label class="consent"><input type="checkbox" id="c2" ${c.sensiveis?'checked':''}><span>Autorizo o tratamento dos meus <b>dados sensíveis de saúde emocional</b> (como registros do diário) para personalizar minha jornada, conforme a LGPD. Posso apagar tudo quando quiser.</span></label>
@@ -601,7 +613,7 @@ function renderGarden(){
  <div style="height:10px"></div>`;
 }
 function nextMission(){const order=recent()?STATIONS.filter(s=>s.id==='acolhimento'||s.id==='reancoragem'):STATIONS;for(const st of order){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}if(recent()){for(const st of STATIONS){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}}return null}
-function dayCard(st){const src=DAY.audios[st.id];if(!src&&window.RevivaNative&&RevivaNative.isNative)return '';const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
+function dayCard(st){if(trk()==='separacao')return '';const src=DAY.audios[st.id];if(!src&&window.RevivaNative&&RevivaNative.isNative)return '';const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
  return `<div class="dayCard"><div class="dayAvatar">${av}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><strong style="font-size:14px">Recado da Day</strong>${src?'':'<span class="soon">em breve</span>'}</div><div class="small">${src?'Um áudio da Day para esta estação.':'Um áudio da Day, cofundadora da Reviva, para esta estação.'}</div>${src?`<audio controls preload="none" src="${esc(src)}"></audio>`:''}</div></div>`}
 function renderStation(){
  const st=STATIONS.find(s=>s.id===route.station);
@@ -646,7 +658,7 @@ function renderApoio(){
  <div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-page="relatos"><span class="qicon" style="background:${C.rose}">${ico('chat')}</span><span style="flex:1"><strong>Relatos de quem está atravessando</strong><br><span class="small">Leia e compartilhe a sua história</span></span><span>›</span></div>
  ${livroOn()?`<div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-page="livro"><span class="qicon" style="background:${C.plum}">${ico('doc')}</span><span style="flex:1"><strong>${esc(LIVRO.titulo)}</strong><br><span class="small">O livro da Day${(LIVRO.trecho||[]).length?' · comece a ler grátis':' · desconto para quem usa o ReViva'}</span></span><span>›</span></div>`:''}
  <div class="pad"><p class="tag" style="margin-bottom:10px">Rede de apoio</p></div>
- <div class="stack pad" style="padding-bottom:24px">${APOIO.filter(a=>!(a[5]==='premium'&&window.RevivaNative&&RevivaNative.isNative)).map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
+ <div class="stack pad" style="padding-bottom:24px">${APOIO.map(a=>{const o=(TRILHAS[trk()]||{}).apoio||{};const ov=o[a[2]];return ov?[a[0],a[1],ov.titulo||a[2],ov.desc||a[3],a[4],a[5],a[6]]:a}).filter(a=>!(a[5]==='premium'&&window.RevivaNative&&RevivaNative.isNative)).map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
 }
 function renderPerfil(){
  const pct=Math.round(totalProgress()*100),r=54,c=2*Math.PI*r;
@@ -694,9 +706,9 @@ document.addEventListener('click',e=>{
  if(act==='slidesDone'){track('apresentacao_concluida');state.step='lead';save();render();return}
  if(act==='leadNext'){saveLead();state.step='questions';state.qStep=0;save();render();return}
  if(act==='qBack'){state.qStep=Math.max(0,state.qStep-1);render();return}
- if(act==='finishOnb'){state.onboarded=true;save();send({tipo:'perfil',evento:'onboarding_concluido',answers:state.answers});go({tab:'jardim',station:null,mission:null});return}
+ if(act==='finishOnb'){state.onboarded=true;applyTrack();applyContent();save();send({tipo:'perfil',evento:'onboarding_concluido',answers:state.answers});go({tab:'jardim',station:null,mission:null});return}
  const ans=t.closest('[data-answer]');
- if(ans){const q=QUESTIONS[state.qStep];state.answers[q.key]=ans.dataset.answer;if(state.qStep<QUESTIONS.length-1)state.qStep++;else state.step=state.onboarded?'done':'ready';save();if(state.step==='done'){state.step='ready';state.onboarded=true;save();toast('Respostas atualizadas');go({tab:'perfil'});return}render();return}
+ if(ans){const q=QUESTIONS[state.qStep];state.answers[q.key]=ans.dataset.answer;if(state.qStep<QUESTIONS.length-1)state.qStep++;else state.step=state.onboarded?'done':'ready';save();if(state.step==='done'){state.step='ready';state.onboarded=true;save();applyTrack();applyContent();toast('Respostas atualizadas');go({tab:'perfil'});return}render();return}
  const tab=t.closest('[data-tab]');if(tab){track('aba',tab.dataset.tab);go({tab:tab.dataset.tab,station:null,mission:null});return}
  const seg=t.closest('[data-seg]');if(seg){route.seg=seg.dataset.seg;render();return}
  const emo=t.closest('[data-emo]');if(emo){emo.classList.toggle('on');return}
@@ -733,7 +745,7 @@ function completeMission(){
  toast(after===3&&before<3?'O canteiro '+st.nome+' está em flor. Uma borboleta veio visitar.':after>before?'Algo cresceu no seu jardim':'Guardado com carinho');
  go({mission:null});
 }
-render();track('app_aberto');loadRelatos();
+applyTrack();applyContent();render();track('app_aberto');loadRelatos();
 if('serviceWorker' in navigator&&!(window.RevivaNative&&RevivaNative.isNative)){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
 </script>
 </body>

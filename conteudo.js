@@ -42,7 +42,7 @@ window.RV_CONTEUDO = {
     { t: 'A culpa costuma visitar o luto. Ela não é a verdade inteira.', a: 'Escreva: "Eu fiz o que podia com o que sabia".' },
     { t: 'O sol volta, mesmo depois das noites mais longas.', a: 'Tome cinco minutos de sol, se puder.' },
     { t: 'Você é mais do que a sua perda.', a: 'Anote três coisas que fazem parte de quem você é.' },
-    { t: 'Há gente que entende o que você sente. Você não está sozinha.', a: 'Leia um relato de outra pessoa aqui no app.' },
+    { t: 'Há gente que entende o que você sente. Você não está [[sozinha|sozinho|só]].', a: 'Leia um relato de outra pessoa aqui no app.' },
     { t: 'Ser gentil consigo é um jeito de honrar quem partiu.', a: 'Faça uma pausa de dois minutos entre uma tarefa e outra.' },
     { t: 'A vida pede presença, não perfeição.', a: 'Durante uma refeição, preste atenção nos sabores.' },
     { t: 'Um passo de cada vez continua sendo um passo.', a: 'Conclua uma pequena tarefa que estava parada.' },
@@ -107,7 +107,7 @@ window.RV_CONTEUDO = {
     'Que ritual simples poderia te ajudar a lembrar com carinho?',
     'O que mudou no seu jeito de ver a vida?',
     'O que você quer plantar para os próximos meses?',
-    'Quando você se sentiu menos sozinha nesta semana?',
+    'Quando você se sentiu menos [[sozinha|sozinho|só]] nesta semana?',
     'Que história dessa pessoa você quer que nunca se perca?',
     'O que você precisa soltar?',
     'O que ainda te faz sentir viva?',
@@ -124,7 +124,7 @@ window.RV_CONTEUDO = {
     'Como está a sua fé, a sua esperança ou aquilo que te sustenta?',
     'O que você sente quando ouve o nome dessa pessoa?',
     'Que parte do seu jardim pede mais cuidado agora?',
-    'O que você descobriu que é capaz de fazer sozinha?',
+    'O que você descobriu que é capaz de fazer [[sozinha|sozinho|por conta própria]]?',
     'Se hoje fosse um capítulo da sua história, qual seria o título?'
   ]
 };
