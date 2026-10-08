@@ -505,7 +505,7 @@ function renderGarden(){
  <div style="height:10px"></div>`;
 }
 function nextMission(){const order=recent()?STATIONS.filter(s=>s.id==='acolhimento'||s.id==='reancoragem'):STATIONS;for(const st of order){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}if(recent()){for(const st of STATIONS){for(const m of vis(st)){if(!state.done[m.id])return{st,m}}}}return null}
-function dayCard(st){const src=DAY.audios[st.id];const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
+function dayCard(st){const src=DAY.audios[st.id];if(!src&&window.RevivaNative&&RevivaNative.isNative)return '';const av=DAY.foto?`<img src="${esc(DAY.foto)}" alt="Day Martins">`:'D';
  return `<div class="dayCard"><div class="dayAvatar">${av}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><strong style="font-size:14px">Recado da Day</strong>${src?'':'<span class="soon">em breve</span>'}</div><div class="small">${src?'Um áudio da Day para esta estação.':'Um áudio da Day, cofundadora da Reviva, para esta estação.'}</div>${src?`<audio controls preload="none" src="${esc(src)}"></audio>`:''}</div></div>`}
 function renderStation(){
  const st=STATIONS.find(s=>s.id===route.station);
@@ -547,7 +547,7 @@ function renderApoio(){
  <div class="sos"><h2>Precisa de ajuda agora?</h2><p>Se a dor estiver insuportável ou surgirem pensamentos de não querer viver, fale com alguém agora. É gratuito e funciona 24 horas.</p><div class="sosBtns"><a href="tel:188">Ligar CVV 188</a><a class="ghost" href="https://cvv.org.br/chat/" target="_blank" rel="noopener">Chat do CVV</a></div><p style="margin:10px 0 0;font-size:12px">Emergência médica: <a href="tel:192" style="color:#fff;font-weight:800">SAMU 192</a></p></div>
  <div class="card" style="margin:0 22px 14px;display:flex;gap:12px;align-items:center;cursor:pointer" data-go="noite"><span class="qicon" style="background:${C.sage}">${ico('moon')}</span><span style="flex:1"><strong>Ansiedade ou solidão à noite</strong><br><span class="small">Respiração guiada e 5-4-3-2-1</span></span><span>›</span></div>
  <div class="pad"><p class="tag" style="margin-bottom:10px">Rede de apoio</p></div>
- <div class="stack pad" style="padding-bottom:24px">${APOIO.map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
+ <div class="stack pad" style="padding-bottom:24px">${APOIO.filter(a=>!(a[5]==='premium'&&window.RevivaNative&&RevivaNative.isNative)).map(a=>`<article class="card apoioCard" ${a[6]?`data-station="${a[6]}" style="cursor:pointer"`:''}><div class="apoioIcon" style="background:${a[4]}">${ico(a[0])}</div><div>${a[5]==='premium'?'<div class="lockTag">Em breve</div>':'<div class="freeTag">Liberado</div>'}<div class="tag">${esc(a[1])}</div><h2 style="margin-top:4px;padding-right:60px">${esc(a[2])}</h2><p class="small" style="margin:4px 0 0">${esc(a[3])}</p></div></article>`).join('')}</div>`;
 }
 function renderPerfil(){
  const pct=Math.round(totalProgress()*100),r=54,c=2*Math.PI*r;
