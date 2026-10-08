@@ -7,6 +7,7 @@
 <meta name="description" content="Reviva — um jardim para atravessar o luto no seu tempo.">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script src="/native.js"></script>
+<script src="/plantas.js"></script>
 <script src="/conteudo.js"></script>
 <script src="/livro.js"></script>
 <link rel="manifest" href="/manifest.json">
@@ -503,9 +504,10 @@ function lotus(s){
  const front=[-48,-16,16,48].map(a=>`<path d="M0,0 C-6,-8 -6,-18 0,-23 C6,-18 6,-8 0,0Z" fill="#DA9CB2" transform="rotate(${a})"/>`).join('');
  return pad(-16,1,14,'#8FAE97',10)+pad(15,2,12,'#7C9A86',170)+`<g transform="translate(0 -6)">${back}${front}<path d="M0,0 C-4,-6 -3,-14 0,-17 C3,-14 4,-6 0,0Z" fill="#C98AA6"/><ellipse cx="0" cy="-8" rx="4.5" ry="2.6" fill="#E2C089"/></g>`;
 }
+const A=window.RV_ART;function plantArt(id,stage){return A?A.plantArt(id,stage):plantArtOld(id,stage)}
 const PLANT_FN={acolhimento:camomila,travessia:oliveira,elo:miosotis,reancoragem:lavanda,ressignificacao:ipe,reviva:girassol};
 /* stage 0 = semente + a "promessa": a silhueta bem leve do que vai florescer */
-function plantArt(id,stage){
+function plantArtOld(id,stage){
  const water=false;const base=water?pond():soil();
  if(stage===0)return `<g opacity=".1">${PLANT_FN[id](3)}</g>`+base+(water?`<circle cx="0" cy="1" r="3.2" fill="#9CB9A6"/>`:`<ellipse cx="0" cy="-2" rx="4.5" ry="3.2" fill="#9C8466"/><path d="M0,-5 q1,-3 3,-4" stroke="${GV.leaf}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`);
  const fly=stage===3?butterfly(24,-74,id==='elo'?'#E2C089':'#B9A3CF',id==='elo'?'#D9A944':'#9A86B8'):'';
@@ -523,6 +525,7 @@ function gardenSVG(){
  const deco=[tuft(40,250),tuft(330,240),tuft(36,420),tuft(326,430),tuft(150,560,.9),tuft(250,570,.9),tuft(178,96,.8)].join('');
  const beds=STATIONS.map((st,i)=>{const p=POS[i],stg=plantStage(st),n=doneCount(st),t=vis(st).length;
   return `<g class="bed" data-station="${st.id}" transform="translate(${p.x},${p.y})" role="button" aria-label="${esc(st.nome)}: ${n} de ${t} passos"><circle r="64" cy="-28" fill="transparent"/>${plantArt(st.id,stg)}<text class="bedLabel" x="0" y="30" text-anchor="middle">${esc(st.nome)}</text><text class="bedSub" x="0" y="45" text-anchor="middle">${PLANTAS[st.id].nome} · ${n===t?'em flor':n+' de '+t}</text></g>`}).join('');
+ if(A){const deco2=[A.tuft(40,250),A.tuft(330,240),A.tuft(36,420),A.tuft(326,430),A.tuft(150,560,.9),A.tuft(250,570,.9),A.tuft(178,96,.8)].join('');return `<svg class="garden" viewBox="0 0 360 600" aria-label="Seu jardim">${A.defs()}${A.scene()}${deco2}${beds}</svg>`}
  return `<svg class="garden" viewBox="0 0 360 600" aria-label="Seu jardim">${bg}${path}${deco}${beds}</svg>`;
 }
 function slideArt(kind){
@@ -530,9 +533,9 @@ function slideArt(kind){
  const arts={
   thread:`<svg viewBox="0 0 260 220" width="240"><path ${s} d="M20,170 C60,40 120,200 130,110 S200,20 180,90 S90,150 150,170 S230,130 240,60"/><circle cx="20" cy="170" r="6" fill="#C08499"/></svg>`,
   hands:`<svg viewBox="0 0 260 220" width="240"><circle cx="130" cy="110" r="70" fill="#f3e4ea"/><path d="M105,95 a14,14 0 0 1 25,-8 a14,14 0 0 1 25,8 c0,20 -25,34 -25,34 s-25,-14 -25,-34z" fill="#C08499"/><path ${s} d="M40,170 C70,150 90,160 110,150"/><path ${s} d="M220,170 C190,150 170,160 150,150"/></svg>`,
-  sprout:`<svg viewBox="-70 -95 140 115" width="230">${plantArt('acolhimento',2)}</svg>`,
+  sprout:`<svg viewBox="-70 -95 140 115" width="230">${A?A.defs():''}${plantArt('acolhimento',2)}</svg>`,
   tools:`<svg viewBox="0 0 260 220" width="240"><rect x="60" y="50" width="100" height="130" rx="10" fill="#fff" stroke="#e9e0d6" stroke-width="2"/><path d="M78,85 h60 M78,110 h60 M78,135 h40" stroke="#7FA1AC" stroke-width="5" stroke-linecap="round"/><path d="M170,170 l50,-80" stroke="#7C9188" stroke-width="10" stroke-linecap="round"/><circle cx="200" cy="60" r="18" fill="#C79A4B" opacity=".85"/></svg>`,
-  garden:`<svg viewBox="-150 -110 300 135" width="270"><g transform="translate(-88,10)">${plantArt('reancoragem',3)}</g><g transform="translate(0,14) scale(1.15)">${plantArt('reviva',3)}</g><g transform="translate(90,10)">${plantArt('acolhimento',3)}</g></svg>`
+  garden:`<svg viewBox="-150 -110 300 135" width="270">${A?A.defs():''}<g transform="translate(-88,10)">${plantArt('reancoragem',3)}</g><g transform="translate(0,14) scale(1.15)">${plantArt('reviva',3)}</g><g transform="translate(90,10)">${plantArt('acolhimento',3)}</g></svg>`
  };return arts[kind]||'';
 }
 const ICON={
@@ -605,7 +608,7 @@ function renderStation(){
  return `<div class="backbar"><button class="back" data-act="backGarden" aria-label="Voltar">←</button><span class="tag">Jardim</span></div>
  <div class="stationHero"><div class="iconBox" style="background:${st.cor}">${ico(st.icon)}</div><div><h1 style="font-size:24px">${esc(st.nome)}</h1><div class="small">${esc(st.sub)}</div></div></div>
  <p class="body pad" style="margin:6px 0 14px">${esc(st.intro)}</p>
- <div class="plantCard"><svg viewBox="-48 -86 96 98" width="104" height="104" aria-hidden="true">${plantArt(st.id,plantStage(st))}</svg><div><div class="tag">A planta deste canteiro</div><h2 style="margin:2px 0 4px">${PLANTAS[st.id].nome}</h2><p class="small" style="margin:0">${esc(PLANTAS[st.id].sig)}</p></div></div>
+ <div class="plantCard"><svg viewBox="-48 -86 96 98" width="104" height="104" aria-hidden="true">${A?A.defs():''}${plantArt(st.id,plantStage(st))}</svg><div><div class="tag">A planta deste canteiro</div><h2 style="margin:2px 0 4px">${PLANTAS[st.id].nome}</h2><p class="small" style="margin:0">${esc(PLANTAS[st.id].sig)}</p></div></div>
  ${dayCard(st)}
  <div class="stack pad" style="padding-bottom:24px">${vis(st).map(m=>`<button class="missionCard ${state.done[m.id]?'done':''}" data-mission="${m.id}"><span class="check">✓</span><span><strong style="font-size:14.5px">${esc(m.titulo)}</strong><br><span class="small">${labelTipo(m.tipo)} · ${m.dur}</span></span><span>›</span></button>`).join('')}</div>`;
 }
