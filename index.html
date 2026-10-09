@@ -205,6 +205,12 @@ h1{letter-spacing:-.012em}
 .vcap .tag{color:rgba(255,255,255,.8)}
 .vcap h2{color:#fff;font-size:20px;margin-top:4px}
 .vmute{position:absolute;top:14px;right:14px;z-index:3;border:0;border-radius:999px;background:rgba(0,0,0,.35);color:#fff;font-size:12px;font-weight:800;padding:7px 11px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+@media(max-width:520px){
+  .bottom{position:fixed;left:0;right:0;bottom:0;z-index:15;padding-bottom:max(calc(12px + var(--safe-b)),24px)}
+  .tab{padding:8px 0 4px}
+  .view{padding-bottom:calc(84px + max(var(--safe-b),12px))}
+  .toast{position:fixed}
+}
 @media(prefers-reduced-motion:reduce){.view{animation:none}}
 </style>
 </head>
